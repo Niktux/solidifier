@@ -1,10 +1,10 @@
 <?php
 
-use Solidifier\Visitors\PublicAttributes;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local;
 use Gaufrette\File;
-use Solidifier\Visitors\FluidSetters;
+use Solidifier\Visitors\Property\PublicAttributes;
+use Solidifier\Visitors\GetterSetter\FluidSetters;
 
 require 'vendor/autoload.php';
 
