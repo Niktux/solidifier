@@ -10,7 +10,6 @@ require 'vendor/autoload.php';
 
 ini_set('xdebug.max_nesting_level', 250);
 
-
 $adapter = new Local('../karma/src');
 $fs = new Filesystem($adapter);
 
@@ -21,7 +20,6 @@ foreach($fs->keys() as $key)
         parseFile($fs->get($key));
     }
 }
-
 
 function parseFile(File $file)
 {
@@ -46,5 +44,4 @@ function parseFile(File $file)
     {
         echo 'Parse Error: ', $e->getMessage();
     }
-
 }
