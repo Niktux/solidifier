@@ -9,7 +9,11 @@
 		}
 	],
 	"keywords" : [
-		"qa solid oop check ci"
+		"qa",
+		"solid",
+		"oop",
+		"check",
+		"ci"
 	],
 	"homepage" : "https://github.com/Niktux/solidifier",
 	"license" : [
