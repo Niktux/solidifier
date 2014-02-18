@@ -14,6 +14,7 @@ use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use Solidifier\Visitors\Property\PublicAttributes;
 use Solidifier\Visitors\GetterSetter\FluidSetters;
+use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 
 class Run extends Command
 {
@@ -50,6 +51,7 @@ class Run extends Command
     
         $traverser->addVisitor(new PublicAttributes());
         $traverser->addVisitor(new FluidSetters());
+        $traverser->addVisitor(new StrongCoupling());
     
         try
         {
