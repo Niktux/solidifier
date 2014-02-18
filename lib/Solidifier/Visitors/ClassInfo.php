@@ -10,12 +10,16 @@ class ClassInfo
         TYPE_INTERFACE = 'interface';
     
     public
+        $namespace,
+        $classname,
         $name,
         $type;
     
-    public function __construct($name, $type = self::TYPE_CLASS)
+    public function __construct($namespace, $classname, $type = self::TYPE_CLASS)
     {
-        $this->name = $name;
+        $this->namespace = $namespace;
+        $this->classname = $classname;
+        $this->name = empty($namespace) ? $classname : "$namespace\\$classname";
         $this->type = $type;    
     }
 }
