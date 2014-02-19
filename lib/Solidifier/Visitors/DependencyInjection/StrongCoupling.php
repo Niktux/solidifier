@@ -36,15 +36,15 @@ class StrongCoupling extends AbstractClassVisitor
         {
             if($node instanceof New_)
             {
-		if($node->class instanceof Name)
-		{
-	            if($this->isAnAllowedObjectType($node->class) === false)
-        	    {
+        if($node->class instanceof Name)
+        {
+                if($this->isAnAllowedObjectType($node->class) === false)
+                {
                         $this->dispatch(
                             new \Solidifier\Defects\StrongCoupling($this->currentClass, $node)
-	                );
-        	    }
-		}
+                    );
+                }
+        }
             }
         }
     }
