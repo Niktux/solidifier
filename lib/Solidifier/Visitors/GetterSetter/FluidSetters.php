@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Expr\Variable;
+use Solidifier\Defects\NotFluidSetter;
 
 class FluidSetterState
 {
@@ -80,10 +81,8 @@ class FluidSetters extends AbstractClassVisitor
                 if($this->currentClass->type !== ClassInfo::TYPE_INTERFACE
                 && $this->currentMethod->isValid() === false)
                 {
-                    echo sprintf(
-                        "WARNING method %s::%s does not follow fluid interface\n",
-                        $this->currentClass->name,
-                        $this->currentMethod->currentMethod
+                    $this->dispatch(
+    	               new NotFluidSetter($this->currentClass, $node)
                     );
                 }
             }

@@ -21,6 +21,8 @@
 	],
 	"require" : {
 		"symfony/console" : "2.4.2",
+		"pimple/pimple" : "2.0.0",
+		"symfony/event-dispatcher" : "2.4.2",
 		"nikic/php-parser" : "1.0.*@dev",
 		"knplabs/gaufrette" : "0.1.6"
 	},

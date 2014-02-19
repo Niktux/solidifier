@@ -15,9 +15,23 @@ use PhpParser\NodeTraverser;
 use Solidifier\Visitors\Property\PublicAttributes;
 use Solidifier\Visitors\GetterSetter\FluidSetters;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
+use Solidifier\DefectDispatcher;
+use Solidifier\DefectSubscriber;
 
 class Run extends Command
 {
+    private
+        $dispatcher,
+        $subcriber;
+    
+    public function __construct(DefectDispatcher $dispatcher, DefectSubscriber $subscriber)
+    {
+        parent::__construct();
+        
+        $this->dispatcher = $dispatcher;
+        $this->subcriber = $subscriber;
+    }
+    
     protected function configure()
     {
         $this->setName('run')
@@ -27,6 +41,8 @@ class Run extends Command
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->subcriber->setOutput($output);
+        
         $src = $input->getArgument('src');
 
         $adapter = new Local($src);
@@ -49,9 +65,16 @@ class Run extends Command
         $parser = new Parser(new Lexer());
         $traverser = new NodeTraverser();
     
-        $traverser->addVisitor(new PublicAttributes());
-        $traverser->addVisitor(new FluidSetters());
-        $traverser->addVisitor(new StrongCoupling());
+        $this->subcriber->setCurrentFile($file);
+        $traverser->addVisitor(new PublicAttributes($this->dispatcher));
+        $traverser->addVisitor(new FluidSetters($this->dispatcher));
+        
+        $visitor = new StrongCoupling($this->dispatcher);
+        $visitor->addExcludePattern('~Iterator$~')
+            ->addExcludePattern('~^Null~')
+            ->addExcludePattern('~Exception$~');
+        
+        $traverser->addVisitor($visitor);
     
         try
         {

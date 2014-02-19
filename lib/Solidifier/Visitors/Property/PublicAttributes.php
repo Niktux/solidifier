@@ -18,11 +18,8 @@ class PublicAttributes extends AbstractClassVisitor
             {
                 foreach($node->props as $property)
                 {
-                    echo sprintf(
-                        "WARNING property %s is public in %s %s\n",
-                        $property->name,
-                        $this->currentClass->type,
-                        $this->currentClass->name
+                    $this->dispatch(
+                        new \Solidifier\Defects\PublicAttribute($this->currentClass, $property, $node)	
                     );
                 }
             }   
