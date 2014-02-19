@@ -10,26 +10,6 @@ use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Expr\Variable;
 use Solidifier\Defects\NotFluidSetter;
 
-class FluidSetterState
-{
-    public
-        $currentMethod,
-        $returnCount,
-        $returnThis;
-    
-    public function __construct($name)
-    {
-        $this->currentMethod = $name;
-        $this->returnCount = 0;
-        $this->returnThis = false;
-    }
-    
-    public function isValid()
-    {
-        return $this->returnCount === 1 && $this->returnThis === true;
-    }
-}
-
 class FluidSetters extends AbstractClassVisitor
 {
     private
