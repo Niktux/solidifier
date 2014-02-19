@@ -82,7 +82,7 @@ class FluidSetters extends AbstractClassVisitor
                 && $this->currentMethod->isValid() === false)
                 {
                     $this->dispatch(
-    	               new NotFluidSetter($this->currentClass, $node)
+                       new NotFluidSetter($this->currentClass, $node)
                     );
                 }
             }

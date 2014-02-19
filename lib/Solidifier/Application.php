@@ -18,7 +18,7 @@ class Application extends \Pimple
     private function initializeServices()
     {
         $this['defect.subscriber'] = function($c) {
-        	return new DefectSubscriber();
+            return new DefectSubscriber();
         };
         
         $this['event.dispatcher'] = function($c) {
@@ -37,7 +37,7 @@ class Application extends \Pimple
     private function initializeCommands()
     {
         $this['run'] = $this->factory(function ($c) {
-            return new Run($c['dispatcher'], $c['defect.subscriber']);	
+            return new Run($c['dispatcher'], $c['defect.subscriber']);
         });
     }
 }
