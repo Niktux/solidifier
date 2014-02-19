@@ -19,7 +19,7 @@ class PublicAttributes extends AbstractClassVisitor
                 foreach($node->props as $property)
                 {
                     $this->dispatch(
-                        new \Solidifier\Defects\PublicAttribute($this->currentClass, $property, $node)	
+                        new \Solidifier\Defects\PublicAttribute($this->currentClass, $property->name, $node)
                     );
                 }
             }   
