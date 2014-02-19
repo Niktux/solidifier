@@ -4,6 +4,7 @@ namespace Solidifier\Visitors\DependencyInjection;
 
 use Solidifier\Visitors\AbstractClassVisitor;
 use PhpParser\Node;
+use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
 use Solidifier\Visitors\ClassInfo;
 use Solidifier\DefectDispatcher;
@@ -35,12 +36,15 @@ class StrongCoupling extends AbstractClassVisitor
         {
             if($node instanceof New_)
             {
-                if($this->isAnAllowedObjectType($node->class) === false)
-                {
-                    $this->dispatch(
-                        new \Solidifier\Defects\StrongCoupling($this->currentClass, $node)
-                    );
-                }    
+		if($node->class instanceof Name)
+		{
+	            if($this->isAnAllowedObjectType($node->class) === false)
+        	    {
+                        $this->dispatch(
+                            new \Solidifier\Defects\StrongCoupling($this->currentClass, $node)
+	                );
+        	    }
+		}
             }
         }
     }
@@ -50,7 +54,7 @@ class StrongCoupling extends AbstractClassVisitor
         $allowed = false;
 
         $objectType = $this->extractClassNameFromFullName($objectType);
-        
+
         foreach($this->excludePattern as $pattern)
         {
             if(preg_match($pattern, $objectType))
@@ -59,7 +63,7 @@ class StrongCoupling extends AbstractClassVisitor
                 break;
             }
         }
-        
+
         return $allowed;
     }
     
