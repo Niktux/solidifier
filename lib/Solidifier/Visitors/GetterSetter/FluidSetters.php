@@ -26,6 +26,7 @@ class FluidSetters extends AbstractClassVisitor
     {
         parent::enterNode($node);
         
+        // FIXME callmethod stack ...
         if($node instanceof ClassMethod)
         {
             if(strtolower(substr($node->name, 0, 3)) === 'set')
