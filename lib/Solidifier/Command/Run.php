@@ -17,6 +17,7 @@ use Solidifier\Visitors\GetterSetter\FluidSetters;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 use Solidifier\DefectDispatcher;
 use Solidifier\DefectSubscriber;
+use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
 
 class Run extends Command
 {
@@ -68,6 +69,7 @@ class Run extends Command
         $this->subcriber->setCurrentFile($file);
         $traverser->addVisitor(new PublicAttributes($this->dispatcher));
         $traverser->addVisitor(new FluidSetters($this->dispatcher));
+        $traverser->addVisitor(new MagicalInstantiation($this->dispatcher));
         
         $visitor = new StrongCoupling($this->dispatcher);
         $visitor->addExcludePattern('~Iterator$~')
