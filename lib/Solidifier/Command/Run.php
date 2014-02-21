@@ -56,6 +56,8 @@ class Run extends Command
                 $this->parseFile($fs->get($key));
             }
         }
+        
+        $this->subcriber->postMortemReport();
     }
 
     private function parseFile(File $file)

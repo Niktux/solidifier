@@ -10,6 +10,7 @@ use Gaufrette\File;
 class DefectSubscriber implements EventSubscriberInterface
 {
     private
+        $counter,
         $currentFile,
         $output;
     
@@ -24,6 +25,7 @@ class DefectSubscriber implements EventSubscriberInterface
     {
         $this->output = new NullOutput();
         $this->currentFile = null;
+        $this->counter = 0;
     }
     
     public function setOutput(OutputInterface $output)
@@ -43,11 +45,22 @@ class DefectSubscriber implements EventSubscriberInterface
     public function onDefect(Defect $event)
     {
         $this->output->writeln(sprintf(
-            "<comment>[%s]</comment> <fg=white;options=bold>%s @ l%d</fg=white;options=bold> : %s",
-            $event->getSeverity(),
+            "<fg=white;options=bold>%s @ l%d</fg=white;options=bold> : %s",
             $this->currentFile->getKey(),
             $event->getLine(),
             $event->getMessage()
         ));
+        
+        $this->counter++;
     }
+    
+    public function postMortemReport()
+    {
+        $this->output->writeln(sprintf(
+        	'<comment>%d defect%s found</comment>',
+            $this->counter,
+            $this->counter > 0 ? 's' : ''
+        ));    
+    }
+    
 }
