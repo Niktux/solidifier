@@ -2,7 +2,6 @@
 
 namespace Solidifier;
 
-use Symfony\Component\EventDispatcher\Event;
 use PhpParser\Node;
 
 abstract class Defect extends Event
@@ -37,11 +36,6 @@ abstract class Defect extends Event
         $this->severity = $severity;
         
         return $this;
-    }
-    
-    public function getEventName()
-    {
-        return self::EVENT_NAME;
     }
     
     abstract public function getMessage();

@@ -18,6 +18,8 @@ use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 use Solidifier\Dispatcher;
 use Solidifier\DefectSubscriber;
 use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
+use Solidifier\Events\TraverseEnd;
+use Solidifier\Events\ChangeFile;
 
 class Run extends Command
 {
@@ -57,7 +59,7 @@ class Run extends Command
             }
         }
         
-        $this->subcriber->postMortemReport();
+        $this->dispatcher->dispatch(new TraverseEnd());
     }
 
     private function parseFile(File $file)
@@ -68,7 +70,8 @@ class Run extends Command
         $parser = new Parser(new Lexer());
         $traverser = new NodeTraverser();
     
-        $this->subcriber->setCurrentFile($file);
+        $this->dispatcher->dispatch(new ChangeFile($file));
+        
         $traverser->addVisitor(new PublicAttributes($this->dispatcher));
         $traverser->addVisitor(new FluidSetters($this->dispatcher));
         $traverser->addVisitor(new MagicalInstantiation($this->dispatcher));

@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Gaufrette\File;
+use Solidifier\Events\TraverseEnd;
+use Solidifier\Events\ChangeFile;
 
 class DefectSubscriber implements EventSubscriberInterface
 {
@@ -18,6 +20,8 @@ class DefectSubscriber implements EventSubscriberInterface
     {
         return array(
             Defect::EVENT_NAME => array('onDefect'),
+            TraverseEnd::EVENT_NAME => array('postMortemReport'),
+            ChangeFile::EVENT_NAME => array('setCurrentFile'),
         );
     }
 
@@ -35,9 +39,9 @@ class DefectSubscriber implements EventSubscriberInterface
         return $this;
     }
     
-    public function setCurrentFile(File $file)
+    public function setCurrentFile(ChangeFile $event)
     {
-       $this->currentFile = $file;
+       $this->currentFile = $event->getCurrentFile();
 
        return $this;
     }    
@@ -54,7 +58,7 @@ class DefectSubscriber implements EventSubscriberInterface
         $this->counter++;
     }
     
-    public function postMortemReport()
+    public function postMortemReport(TraverseEnd $event)
     {
         $this->output->writeln(sprintf(
         	'<comment>%d defect%s found</comment>',
