@@ -62,8 +62,8 @@ class Analyzer
     
         $visitor = new StrongCoupling($this->dispatcher);
         $visitor->addExcludePattern('~Iterator$~')
-        ->addExcludePattern('~^Null~')
-        ->addExcludePattern('~Exception$~');
+          ->addExcludePattern('~^Null~')
+           ->addExcludePattern('~Exception$~');
     
         $traverser->addVisitor($visitor);
     
