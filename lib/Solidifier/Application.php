@@ -4,6 +4,7 @@ namespace Solidifier;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Solidifier\Command\Run;
+use Gaufrette\Filesystem;
 
 class Application extends \Pimple
 {
@@ -12,7 +13,6 @@ class Application extends \Pimple
         parent::__construct();
         
         $this->initializeServices();
-        $this->initializeCommands();
     }
     
     private function initializeServices()
@@ -32,12 +32,9 @@ class Application extends \Pimple
         $this['dispatcher'] = function($c) {
             return new Dispatcher($c['event.dispatcher']);
         };
-    }
-    
-    private function initializeCommands()
-    {
-        $this['run'] = $this->factory(function ($c) {
-            return new Run($c['dispatcher'], $c['defect.subscriber']);
+        
+        $this['analyzer'] = $this->protect(function(Filesystem $fs) {
+            return new Analyzer($this['dispatcher'], $fs);    
         });
     }
 }

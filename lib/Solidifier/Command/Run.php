@@ -8,31 +8,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Gaufrette\Adapter\Local;
 use Gaufrette\Filesystem;
-use Gaufrette\File;
-use PhpParser\Parser;
-use PhpParser\Lexer;
-use PhpParser\NodeTraverser;
-use Solidifier\Visitors\Property\PublicAttributes;
-use Solidifier\Visitors\GetterSetter\FluidSetters;
-use Solidifier\Visitors\DependencyInjection\StrongCoupling;
-use Solidifier\Dispatcher;
-use Solidifier\DefectSubscriber;
-use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
-use Solidifier\Events\TraverseEnd;
-use Solidifier\Events\ChangeFile;
+use Solidifier\Application;
 
 class Run extends Command
 {
     private
-        $dispatcher,
-        $subcriber;
+        $container;
     
-    public function __construct(Dispatcher $dispatcher, DefectSubscriber $subscriber)
+    public function __construct()
     {
         parent::__construct();
         
-        $this->dispatcher = $dispatcher;
-        $this->subcriber = $subscriber;
+        $this->container = new Application();
     }
     
     protected function configure()
@@ -44,53 +31,12 @@ class Run extends Command
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->subcriber->setOutput($output);
+        $this->container['defect.subscriber']->setOutput($output);
         
         $src = $input->getArgument('src');
+        $fs = new Filesystem(new Local($src));
 
-        $adapter = new Local($src);
-        $fs = new Filesystem($adapter);
-        
-        foreach($fs->keys() as $key)
-        {
-            if($adapter->isDirectory($key) === false)
-            {
-                $this->parseFile($fs->get($key));
-            }
-        }
-        
-        $this->dispatcher->dispatch(new TraverseEnd());
-    }
-
-    private function parseFile(File $file)
-    {
-        $key = $file->getKey();
-        $code = $file->getContent();
-    
-        $parser = new Parser(new Lexer());
-        $traverser = new NodeTraverser();
-    
-        $this->dispatcher->dispatch(new ChangeFile($file));
-        
-        $traverser->addVisitor(new PublicAttributes($this->dispatcher));
-        $traverser->addVisitor(new FluidSetters($this->dispatcher));
-        $traverser->addVisitor(new MagicalInstantiation($this->dispatcher));
-        
-        $visitor = new StrongCoupling($this->dispatcher);
-        $visitor->addExcludePattern('~Iterator$~')
-            ->addExcludePattern('~^Null~')
-            ->addExcludePattern('~Exception$~');
-        
-        $traverser->addVisitor($visitor);
-    
-        try
-        {
-            $stmts = $parser->parse($code);
-            $traverser->traverse($stmts);
-        }
-        catch (PhpParser\Error $e)
-        {
-            $output->writeln('Parse Error: ', $e->getMessage());
-        }
+        $analyzer = $this->container['analyzer']($fs);
+        $analyzer->analyze();
     }
 }
