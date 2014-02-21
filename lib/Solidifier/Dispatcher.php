@@ -4,7 +4,7 @@ namespace Solidifier;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class DefectDispatcher
+class Dispatcher
 {
     private
         $dispatcher;
@@ -14,7 +14,7 @@ class DefectDispatcher
         $this->dispatcher = $dispatcher;
     }
     
-    public function dispatch(Defect $event)
+    public function dispatch(Event $event)
     {
         $this->dispatcher->dispatch($event->getEventName(), $event);
     }

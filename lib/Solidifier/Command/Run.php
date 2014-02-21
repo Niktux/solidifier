@@ -15,7 +15,7 @@ use PhpParser\NodeTraverser;
 use Solidifier\Visitors\Property\PublicAttributes;
 use Solidifier\Visitors\GetterSetter\FluidSetters;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
-use Solidifier\DefectDispatcher;
+use Solidifier\Dispatcher;
 use Solidifier\DefectSubscriber;
 use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
 
@@ -25,7 +25,7 @@ class Run extends Command
         $dispatcher,
         $subcriber;
     
-    public function __construct(DefectDispatcher $dispatcher, DefectSubscriber $subscriber)
+    public function __construct(Dispatcher $dispatcher, DefectSubscriber $subscriber)
     {
         parent::__construct();
         

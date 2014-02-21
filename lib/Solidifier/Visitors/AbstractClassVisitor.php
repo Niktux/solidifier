@@ -8,7 +8,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\Namespace_;
-use Solidifier\DefectDispatcher;
+use Solidifier\Dispatcher;
 use Solidifier\Defect;
 
 abstract class AbstractClassVisitor extends NodeVisitorAbstract
@@ -18,7 +18,7 @@ abstract class AbstractClassVisitor extends NodeVisitorAbstract
         $currentNamespace,
         $currentClass;
     
-    public function __construct(DefectDispatcher $dispatcher)
+    public function __construct(Dispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }

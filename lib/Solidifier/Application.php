@@ -30,7 +30,7 @@ class Application extends \Pimple
         };
         
         $this['dispatcher'] = function($c) {
-            return new DefectDispatcher($c['event.dispatcher']);
+            return new Dispatcher($c['event.dispatcher']);
         };
     }
     

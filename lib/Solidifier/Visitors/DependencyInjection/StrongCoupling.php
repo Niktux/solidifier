@@ -7,14 +7,14 @@ use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
 use Solidifier\Visitors\ClassInfo;
-use Solidifier\DefectDispatcher;
+use Solidifier\Dispatcher;
 
 class StrongCoupling extends AbstractClassVisitor
 {
     private
         $excludePattern;
     
-    public function __construct(DefectDispatcher $dispatcher)
+    public function __construct(Dispatcher $dispatcher)
     {
         parent::__construct($dispatcher);
         
