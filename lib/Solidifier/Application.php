@@ -30,7 +30,7 @@ class Application extends \Pimple
         };
         
         $this['dispatcher'] = function($c) {
-            return new Dispatcher($c['event.dispatcher']);
+            return new Dispatcher\EventDispatcher($c['event.dispatcher']);
         };
         
         $this['analyzer'] = $this->protect(function(Filesystem $fs) {
