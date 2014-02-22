@@ -3,7 +3,6 @@
 namespace Solidifier;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Solidifier\Command\Run;
 use Gaufrette\Filesystem;
 
 class Application extends \Pimple

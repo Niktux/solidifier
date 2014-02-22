@@ -6,7 +6,6 @@ use Solidifier\Visitors\AbstractClassVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
-use PhpParser\NodeVisitorAbstract;
 
 class MagicalInstantiation extends AbstractClassVisitor
 {
