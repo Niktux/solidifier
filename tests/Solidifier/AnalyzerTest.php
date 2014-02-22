@@ -24,7 +24,7 @@ class AnalyzerTest extends \PHPUnit_Framework_TestCase
     
     private function analyze()
     {
-        $this->analyzer->analyze();
+        $this->analyzer->run();
         
         return $this->dispatcher->getEvents();
     }

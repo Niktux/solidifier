@@ -37,6 +37,6 @@ class Run extends Command
         $fs = new Filesystem(new Local($src));
 
         $analyzer = $this->container['analyzer']($fs);
-        $analyzer->analyze();
+        $analyzer->run();
     }
 }

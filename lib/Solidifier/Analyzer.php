@@ -26,12 +26,12 @@ class Analyzer
         $this->fs = $fs;
     }
     
-    public function analyze()
+    public function run()
     {
         $nodes = $this->parseFiles();
         
-        $this->firstTraverse($nodes);
-        $this->secondTraverse($nodes);
+        $this->preAnalyze($nodes);
+        $this->analyze($nodes);
         
         $this->dispatcher->dispatch(new TraverseEnd());
     }
@@ -68,14 +68,14 @@ class Analyzer
         return $parser->parse($code);
     }    
     
-    private function firstTraverse(array $nodes)
+    private function preAnalyze(array $nodes)
     {
         $traverser = new NodeTraverser();
         
         $this->traverse($nodes, $traverser);
     }
     
-    private function secondTraverse(array $nodes)
+    private function analyze(array $nodes)
     {
         $traverser = new NodeTraverser();
     
