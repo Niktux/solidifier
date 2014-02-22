@@ -2,7 +2,6 @@
 
 namespace Solidifier;
 
-use Puzzle\Configuration;
 use Solidifier\Visitors\Property\PublicAttributes;
 use Solidifier\Visitors\GetterSetter\FluidSetters;
 use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
@@ -11,11 +10,11 @@ use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 class ConfigurationHandler
 {
     private
-        $config;
+        $configuration;
     
-    public function __construct(Configuration $config)
+    public function __construct(array $configuration)
     {
-        $this->config = $config;    
+        $this->configuration = $configuration;    
     }
     
     public function configure(VisitableAnalyzer $analyzer)

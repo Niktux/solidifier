@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Gaufrette\Filesystem;
 use Puzzle\Configuration;
 use Solidifier\Reporters\HTMLReporter;
+use Symfony\Component\Yaml\Yaml;
 
 class Application extends \Pimple
 {
@@ -19,6 +20,19 @@ class Application extends \Pimple
     
     private function initializeServices()
     {
+        $this['configuration'] = function($c) {
+            
+            $configuration = array();
+            
+            $filename = '.solidifier.yml';
+            if(is_file($filename))
+            {
+                $configuration = Yaml::parse($filename);
+            }
+            
+            return $configuration;
+        };
+        
         $this['event.dispatcher'] = function($c) {
             return new EventDispatcher();
         };
@@ -27,10 +41,10 @@ class Application extends \Pimple
             return new Dispatchers\EventDispatcher($c['event.dispatcher']);
         };
         
-        $this['analyzer'] = $this->protect(function(Configuration $config, Filesystem $fs) {
+        $this['analyzer'] = $this->protect(function(Filesystem $fs) {
             $analyzer = new Analyzer($this['dispatcher'], $fs);
 
-            $handler = new ConfigurationHandler($config);
+            $handler = new ConfigurationHandler($this['configuration']);
             $handler->configure($analyzer);
             
             return $analyzer;

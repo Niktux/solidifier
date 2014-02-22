@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Gaufrette\Adapter\Local;
 use Gaufrette\Filesystem;
 use Solidifier\Application;
-use Puzzle\Configuration\Memory;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -39,9 +38,8 @@ class Run extends Command
         
         $src = $input->getArgument('src');
         $fs = new Filesystem(new Local($src));
-        $config = new Memory(array());
 
-        $analyzer = $this->container['analyzer']($config, $fs);
+        $analyzer = $this->container['analyzer']($fs);
         $analyzer->run();
     }
     
