@@ -4,6 +4,7 @@ namespace Solidifier;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Gaufrette\Filesystem;
+use Puzzle\Configuration;
 
 class Application extends \Pimple
 {
@@ -28,8 +29,13 @@ class Application extends \Pimple
             return new Dispatcher\EventDispatcher($c['event.dispatcher']);
         };
         
-        $this['analyzer'] = $this->protect(function(Filesystem $fs) {
-            return new Analyzer($this['dispatcher'], $fs);    
+        $this['analyzer'] = $this->protect(function(Configuration $config, Filesystem $fs) {
+            $analyzer = new Analyzer($this['dispatcher'], $fs);
+
+            $handler = new ConfigurationHandler($config);
+            $handler->configure($analyzer);
+            
+            return $analyzer;
         });
     }
 }

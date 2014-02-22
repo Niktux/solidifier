@@ -9,21 +9,36 @@ use PhpParser\Parser;
 use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use Solidifier\Events\ChangeFile;
-use Solidifier\Visitors\Property\PublicAttributes;
-use Solidifier\Visitors\GetterSetter\FluidSetters;
-use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
-use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 
 class Analyzer
 {
     private
+        $nodeTraversers,
         $dispatcher,
         $fs;
     
     public function __construct(Dispatcher $dispatcher, Filesystem $fs)
     {
+        $this->nodeTraversers = array(
+            'preAnalyze' => new NodeTraverser(),
+            'analyze' => new NodeTraverser(),
+        );
+        
         $this->dispatcher = $dispatcher;
         $this->fs = $fs;
+    }
+    
+    public function addVisitor($traverseName, Visitor $visitor)
+    {
+        if(! isset($this->nodeTraversers[$traverseName]))
+        {
+            throw new \RuntimeException("$traverseName is not a valid traverse step");
+        }
+        
+        $visitor->setDispatcher($this->dispatcher);
+        $this->nodeTraversers[$traverseName]->addVisitor($visitor);
+        
+        return $this;
     }
     
     public function run()
@@ -67,26 +82,12 @@ class Analyzer
     
     private function preAnalyze(array $nodes)
     {
-        $traverser = new NodeTraverser();
-        
-        $this->traverse($nodes, $traverser);
+        $this->traverse($nodes, $this->nodeTraversers['preAnalyze']);
     }
     
     private function analyze(array $nodes)
     {
-        $traverser = new NodeTraverser();
-    
-        $traverser->addVisitor(new PublicAttributes($this->dispatcher));
-        $traverser->addVisitor(new FluidSetters($this->dispatcher));
-        $traverser->addVisitor(new MagicalInstantiation($this->dispatcher));
-
-        $visitor = new StrongCoupling($this->dispatcher);
-        $visitor->addExcludePattern('~Iterator$~')
-          ->addExcludePattern('~^Null~')
-          ->addExcludePattern('~Exception$~');
-        $traverser->addVisitor($visitor);
-        
-        $this->traverse($nodes, $traverser);
+        $this->traverse($nodes, $this->nodeTraversers['analyze']);
     }
     
     private function traverse(array $nodes, NodeTraverser $traverser)

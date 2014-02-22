@@ -24,6 +24,7 @@
 		"pimple/pimple" : "2.0.0",
 		"symfony/event-dispatcher" : "2.4.2",
 		"nikic/php-parser" : "1.0.*@dev",
+		"puzzle/configuration" : "1.4",
 		"knplabs/gaufrette" : "0.1.6"
 	},
 	"require-dev" : {
