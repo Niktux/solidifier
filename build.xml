@@ -5,7 +5,7 @@
 <property name="srcDir" value="${basedir}/lib"/>
 	
  <target name="build"
-   depends="prepare,composer,lint,phploc,pdepend,phpmd,phpcs,phpcpd,phpdoc,phpcb,phpunit"/>
+   depends="prepare,composer,lint,phploc,pdepend,phpmd,phpcs,phpcpd,phpcb,phpunit"/>
 
  <target name="clean" description="Cleanup build artifacts">
   <delete dir="${basedir}/build/api"/>
@@ -88,15 +88,6 @@
    <arg value="--log-pmd" />
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />
    <arg path="${srcDir}" />
-  </exec>
- </target>
-
- <target name="phpdoc" description="Generate API documentation using phpDocumentor2">
-  <exec executable="phpdoc" >
-  <arg value="--directory" />
-  <arg path="${srcDir}" />
-  <arg value="--target" />
-  <arg path="${basedir}/build/api" />
   </exec>
  </target>
 
