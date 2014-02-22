@@ -42,9 +42,9 @@ class Console implements EventSubscriberInterface
     
     public function setCurrentFile(ChangeFile $event)
     {
-       $this->currentFile = $event->getCurrentFile();
+        $this->currentFile = $event->getCurrentFile();
 
-       return $this;
+        return $this;
     }    
     
     public function onDefect(Defect $event)
@@ -62,10 +62,9 @@ class Console implements EventSubscriberInterface
     public function postMortemReport(TraverseEnd $event)
     {
         $this->output->writeln(sprintf(
-        	'<comment>%d defect%s found</comment>',
+            '<comment>%d defect%s found</comment>',
             $this->counter,
             $this->counter > 0 ? 's' : ''
         ));    
     }
-    
 }

@@ -60,12 +60,9 @@ class Analyzer
     
     private function parseFile(File $file)
     {
-        $key = $file->getKey();
-        $code = $file->getContent();
-    
         $parser = new Parser(new Lexer());
     
-        return $parser->parse($code);
+        return $parser->parse($file->getContent());
     }    
     
     private function preAnalyze(array $nodes)
