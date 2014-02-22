@@ -28,7 +28,7 @@
    <arg value="-nc" />
    <arg value="http://getcomposer.org/composer.phar" />
   </exec> 	
-  <exec executable="php" dir="${basedir}">
+  <exec executable="php" dir="${basedir}" failonerror="true">
    <arg value="composer.phar" />
    <arg value="update" />
    <arg value="--dev" />
