@@ -13,14 +13,11 @@ class Application extends \Pimple
         parent::__construct();
         
         $this->initializeServices();
+        $this->initializeSubscribers();
     }
     
     private function initializeServices()
     {
-        $this['subscriber.console'] = function($c) {
-            return new EventSubscribers\Console();
-        };
-        
         $this['event.dispatcher'] = function($c) {
             return new EventDispatcher();
         };
@@ -37,5 +34,16 @@ class Application extends \Pimple
             
             return $analyzer;
         });
+    }
+    
+    private function initializeSubscribers()
+    {
+        $this['subscriber.console'] = function($c) {
+            return new EventSubscribers\Console();
+        };
+        
+        $this['subscriber.html'] = function($c) {
+            return new EventSubscribers\HTML();
+        };
     }
 }

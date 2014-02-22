@@ -10,6 +10,8 @@ use Gaufrette\Adapter\Local;
 use Gaufrette\Filesystem;
 use Solidifier\Application;
 use Puzzle\Configuration\Memory;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Run extends Command
 {
@@ -27,16 +29,13 @@ class Run extends Command
     {
         $this->setName('run')
             ->setDescription('Check rules')
-            ->addArgument('src', InputArgument::REQUIRED, 'sources to parse');
+            ->addArgument('src', InputArgument::REQUIRED, 'sources to parse')
+            ->addOption('htmlReport', null, InputOption::VALUE_REQUIRED, 'HTML report filename');
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dispatcher = $this->container['event.dispatcher'];
-        
-        $cli = $this->container['subscriber.console'];
-        $cli->setOutput($output);
-        $dispatcher->addSubscriber($cli);
+        $this->configureOutputs($input, $output);
         
         $src = $input->getArgument('src');
         $fs = new Filesystem(new Local($src));
@@ -44,5 +43,31 @@ class Run extends Command
 
         $analyzer = $this->container['analyzer']($config, $fs);
         $analyzer->run();
+    }
+    
+    private function configureOutputs(InputInterface $input, OutputInterface $output)
+    {
+        $dispatcher = $this->container['event.dispatcher'];
+
+        $this->enableConsoleOutput($dispatcher, $output);
+        $this->enableHtmlReport($dispatcher, $input->getOption('htmlReport'));
+    }
+    
+    private function enableConsoleOutput(EventDispatcherInterface $dispatcher, OutputInterface $output)
+    {
+        $console = $this->container['subscriber.console'];
+        $console->setOutput($output);
+        $dispatcher->addSubscriber($console);
+    }
+    
+    private function enableHtmlReport(EventDispatcherInterface $dispatcher, $htmlReportFilename)
+    {
+        if($htmlReportFilename !== null)
+        {
+            $html = $this->container['subscriber.html'];
+            $html->setReportFilename($htmlReportFilename);
+            
+            $dispatcher->addSubscriber($html);
+        }
     }
 }
