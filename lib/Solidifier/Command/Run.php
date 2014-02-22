@@ -33,7 +33,7 @@ class Run extends Command
     {
         $dispatcher = $this->container['event.dispatcher'];
         
-        $cli = $this->container['subscriber.cli'];
+        $cli = $this->container['subscriber.console'];
         $cli->setOutput($output);
         $dispatcher->addSubscriber($cli);
         

@@ -17,8 +17,8 @@ class Application extends \Pimple
     
     private function initializeServices()
     {
-        $this['subscriber.cli'] = function($c) {
-            return new DefectSubscriber();
+        $this['subscriber.console'] = function($c) {
+            return new EventSubscribers\Console();
         };
         
         $this['event.dispatcher'] = function($c) {
