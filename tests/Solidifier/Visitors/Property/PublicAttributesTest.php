@@ -7,19 +7,69 @@ use Solidifier\Analyzer;
 
 class PublicAttributesTest extends AnalyzeTestCase
 {
+    const
+        DEFECT_TYPE = 'Solidifier\Defects\PublicAttribute';
+    
     protected function configureAnalyzer(Analyzer $analyzer)
     {
         $analyzer->addVisitor('analyze', new PublicAttributes());
     }
     
-    public function testFoo()
+    public function testSingle()
     {
-        $files = array(
+        $this->analyze(array(
         	'foo.php' => '<?php class Foo { public $bar;}',
-        );
-        
-        list($events, $types) = $this->analyze($files);
+        ));
     
-        $this->assertContains('Solidifier\Defects\PublicAttribute', $types);
+        $this->assertContainsType(self::DEFECT_TYPE, 1);
+    }
+    
+    public function testMany()
+    {
+        $this->analyze(array(
+        	'foo.php' => '<?php
+            class Foo
+            {
+                public $bar;
+                public $baz, $bad; 
+            }',
+        ));
+    
+        $this->assertContainsType(self::DEFECT_TYPE, 3);
+    }
+    
+    public function testNone()
+    {
+        $this->analyze(array(
+        	'foo.php' => '<?php
+            class Foo
+            {
+                protected $bar;
+                private $baz, $bad; 
+            }',
+        ));
+    
+        $this->assertContainsType(self::DEFECT_TYPE, 0);
+    }
+    
+    public function testManyClasses()
+    {
+        $this->analyze(array(
+        	'foo.php' => '<?php
+            class Foo
+            {
+                protected $bar;
+                public $baz, $bad; 
+            }
+            class Bar
+            {
+                public $bar;
+                public $baz;
+                public $bad;
+                public function foo() { $foo = 2; } 
+            }',
+        ));
+    
+        $this->assertContainsType(self::DEFECT_TYPE, 5);
     }
 }

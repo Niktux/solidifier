@@ -9,10 +9,14 @@ use Solidifier\Dispatchers\TestDispatcher;
 abstract class AnalyzeTestCase extends \PHPUnit_Framework_TestCase
 {
     protected
+        $events,
+        $types,
         $dispatcher;
     
     protected function setUp()
     {
+        $this->events = array();
+        $this->types = array();
         $this->dispatcher = new TestDispatcher();
     }
     
@@ -28,13 +32,11 @@ abstract class AnalyzeTestCase extends \PHPUnit_Framework_TestCase
         
         $analyzer->run();
         
-        $events = $this->dispatcher->getEvents();
-        $types = $this->extractEventTypes($events);
+        $this->events = $this->dispatcher->getEvents();
+        $this->types = $this->extractEventTypes($this->events);
         
-        $this->assertContains('Solidifier\Events\ChangeFile', $types);
-        $this->assertContains('Solidifier\Events\TraverseEnd', $types);
-        
-        return array($events, $types);
+        $this->assertContains('Solidifier\Events\ChangeFile', $this->types);
+        $this->assertContains('Solidifier\Events\TraverseEnd', $this->types);
     }
     
     private function extractEventTypes(array $events)
@@ -42,5 +44,14 @@ abstract class AnalyzeTestCase extends \PHPUnit_Framework_TestCase
         return array_map(function ($event) {
             return get_class($event);
         }, $events);
+    }
+    
+    protected function assertContainsType($type, $expectedCount)
+    {
+        $it = new \CallbackFilterIterator(new \ArrayIterator($this->types), function($item) use($type) {
+        	return $item === $type;
+        });
+        
+        return $this->assertSame($expectedCount, iterator_count($it));
     }
 }
