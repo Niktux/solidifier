@@ -28,6 +28,18 @@ class Analyzer
     
     public function analyze()
     {
+        $nodes = $this->parseFiles();
+        
+        $this->firstTraverse($nodes);
+        $this->secondTraverse($nodes);
+        
+        $this->dispatcher->dispatch(new TraverseEnd());
+    }
+    
+    private function parseFiles()
+    {
+        $nodes = array();
+        
         $adapter = $this->fs->getAdapter();
         
         $iterator = new \RegexIterator(
@@ -39,11 +51,11 @@ class Analyzer
         {
             if($adapter->isDirectory($key) === false)
             {
-                $this->parseFile($this->fs->get($key));
+                $nodes[$key] = $this->parseFile($this->fs->get($key));
             }
         }
-    
-        $this->dispatcher->dispatch(new TraverseEnd());
+        
+        return $nodes;
     }
     
     private function parseFile(File $file)
@@ -52,22 +64,40 @@ class Analyzer
         $code = $file->getContent();
     
         $parser = new Parser(new Lexer());
-        $traverser = new NodeTraverser();
     
-        $this->dispatcher->dispatch(new ChangeFile($file));
+        return $parser->parse($code);
+    }    
+    
+    private function firstTraverse(array $nodes)
+    {
+        $traverser = new NodeTraverser();
+        
+        $this->traverse($nodes, $traverser);
+    }
+    
+    private function secondTraverse(array $nodes)
+    {
+        $traverser = new NodeTraverser();
     
         $traverser->addVisitor(new PublicAttributes($this->dispatcher));
         $traverser->addVisitor(new FluidSetters($this->dispatcher));
         $traverser->addVisitor(new MagicalInstantiation($this->dispatcher));
-    
+
         $visitor = new StrongCoupling($this->dispatcher);
         $visitor->addExcludePattern('~Iterator$~')
           ->addExcludePattern('~^Null~')
-           ->addExcludePattern('~Exception$~');
-    
+          ->addExcludePattern('~Exception$~');
         $traverser->addVisitor($visitor);
+        
+        $this->traverse($nodes, $traverser);
+    }
     
-        $stmts = $parser->parse($code);
-        $traverser->traverse($stmts);
-    }    
+    private function traverse(array $nodes, NodeTraverser $traverser)
+    {
+        foreach($nodes as $file => $stmts)
+        {
+            $this->dispatcher->dispatch(new ChangeFile($file));
+            $traverser->traverse($stmts);
+        }
+    }
 }

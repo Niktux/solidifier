@@ -50,7 +50,7 @@ class DefectSubscriber implements EventSubscriberInterface
     {
         $this->output->writeln(sprintf(
             "<fg=white;options=bold>%s @ l%d</fg=white;options=bold> : %s",
-            $this->currentFile->getKey(),
+            $this->currentFile,
             $event->getLine(),
             $event->getMessage()
         ));
