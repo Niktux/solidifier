@@ -4,7 +4,6 @@ namespace Solidifier;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Gaufrette\Filesystem;
-use Puzzle\Configuration;
 use Solidifier\Reporters\HTMLReporter;
 use Symfony\Component\Yaml\Yaml;
 

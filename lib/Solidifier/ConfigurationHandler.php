@@ -10,11 +10,14 @@ use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 class ConfigurationHandler
 {
     private
-        $configuration;
+        $configuration,
+        $visitors;
     
     public function __construct(array $configuration)
     {
         $this->configuration = $configuration;    
+        
+        $this->initializeVisitors();
     }
     
     public function configure(VisitableAnalyzer $analyzer)
@@ -28,18 +31,58 @@ class ConfigurationHandler
         $traverse = 'preAnalyze';
     }
     
+    private function initializeVisitors()
+    {        
+        $this->visitors = array(
+                        
+            'property.public' => function(array $config) {
+                return new PublicAttributes();    
+            },
+            
+            'getterSetter.fluid' => function(array $config) {
+                return new FluidSetters();    
+            },
+            
+            'dependency.magical' => function(array $config) {
+                return new MagicalInstantiation();    
+            },
+            
+            'dependency.strongCoupling' => function(array $config) {
+                $visitor = new StrongCoupling();
+                
+                $visitor->addExcludePattern('~Iterator$~')
+                    ->addExcludePattern('~^Null~')
+                    ->addExcludePattern('~Exception$~');
+                
+                if(isset($config['excludePatterns']))
+                {
+                    foreach($config['excludePatterns'] as $pattern)
+                    {
+                        $visitor->addExcludePattern("~$pattern~");
+                    }            
+                }
+                
+               return $visitor;
+            },
+        );
+    }
+    
     private function addAnalyzeVisitors(VisitableAnalyzer $analyzer)
     {
         $traverse = 'analyze';
         
-        $analyzer->addVisitor($traverse, new PublicAttributes());
-        $analyzer->addVisitor($traverse, new FluidSetters());
-        $analyzer->addVisitor($traverse, new MagicalInstantiation());
-        
-        $visitor = new StrongCoupling();
-        $visitor->addExcludePattern('~Iterator$~')
-            ->addExcludePattern('~^Null~')
-            ->addExcludePattern('~Exception$~');
-        $analyzer->addVisitor($traverse, $visitor);        
+        foreach($this->visitors as $key => $closure)
+        {
+            $config = array();
+            if(isset($this->configuration[$key]))
+            {
+                $config = $this->configuration[$key];
+            }
+            
+            if(! isset($config['enabled']) || $config['enabled'] === true)
+            {
+                $analyzer->addVisitor($traverse, $closure($config));
+            }
+        }
     }
 }

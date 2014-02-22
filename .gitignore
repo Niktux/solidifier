@@ -13,3 +13,6 @@ php_errors.log
 
 # Code coverage report
 report/
+
+# test data
+lib/.solidifier.yml
