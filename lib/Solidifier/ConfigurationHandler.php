@@ -18,18 +18,18 @@ class ConfigurationHandler
         $this->config = $config;    
     }
     
-    public function configure(Analyzer $analyzer)
+    public function configure(VisitableAnalyzer $analyzer)
     {
         $this->addPreAnalyzeVisitors($analyzer);            
         $this->addAnalyzeVisitors($analyzer);            
     }
     
-    private function addPreAnalyzeVisitors(Analyzer $analyzer)
+    private function addPreAnalyzeVisitors(VisitableAnalyzer $analyzer)
     {
         $traverse = 'preAnalyze';
     }
     
-    private function addAnalyzeVisitors(Analyzer $analyzer)
+    private function addAnalyzeVisitors(VisitableAnalyzer $analyzer)
     {
         $traverse = 'analyze';
         

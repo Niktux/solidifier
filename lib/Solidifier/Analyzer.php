@@ -10,7 +10,7 @@ use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use Solidifier\Events\ChangeFile;
 
-class Analyzer
+class Analyzer implements VisitableAnalyzer
 {
     private
         $nodeTraversers,
