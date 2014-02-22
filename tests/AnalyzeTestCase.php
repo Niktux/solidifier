@@ -5,6 +5,7 @@ namespace Solidifier;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\InMemory;
 use Solidifier\Dispatchers\TestDispatcher;
+use Solidifier\Analyzers\Analyzer;
 
 abstract class AnalyzeTestCase extends \PHPUnit_Framework_TestCase
 {

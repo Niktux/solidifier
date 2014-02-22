@@ -42,7 +42,7 @@ class Application extends \Pimple
         };
         
         $this['analyzer'] = $this->protect(function(Filesystem $fs) {
-            $analyzer = new Analyzer($this['dispatcher'], $fs);
+            $analyzer = new Analyzers\Analyzer($this['dispatcher'], $fs);
 
             $handler = new ConfigurationHandler($this['configuration']);
             $handler->configure($analyzer);

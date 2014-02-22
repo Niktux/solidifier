@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidifier;
+namespace Solidifier\Analyzers;
 
 use Gaufrette\Filesystem;
 use Solidifier\Events\TraverseEnd;
@@ -9,6 +9,9 @@ use PhpParser\Parser;
 use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use Solidifier\Events\ChangeFile;
+use Solidifier\Dispatcher;
+use Solidifier\VisitableAnalyzer;
+use Solidifier\Visitor;
 
 class Analyzer implements VisitableAnalyzer
 {

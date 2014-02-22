@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidifier;
+namespace Solidifier\Analyzers;
 
 use Solidifier\AnalyzeTestCase;
 use Solidifier\Visitors\Property\PublicAttributes;

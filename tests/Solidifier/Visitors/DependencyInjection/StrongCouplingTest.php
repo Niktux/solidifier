@@ -3,7 +3,7 @@
 namespace Solidifier\Visitors\DependencyInjection;
 
 use Solidifier\AnalyzeTestCase;
-use Solidifier\Analyzer;
+use Solidifier\Analyzers\Analyzer;
 
 class StrongCouplingTest extends AnalyzeTestCase
 {
