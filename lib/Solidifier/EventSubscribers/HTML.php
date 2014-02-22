@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Solidifier\Events\TraverseEnd;
 use Solidifier\Events\ChangeFile;
 use Solidifier\Defect;
+use Solidifier\Reporters\HTMLReporter;
 
 class HTML implements EventSubscriberInterface
 {
@@ -16,11 +17,13 @@ class HTML implements EventSubscriberInterface
         DEFAULT_REPORT_FILENAME = 'report.html';
     
     private
+        $reporter,
         $reportFilename,
         $currentFile;
     
-    public function __construct()
+    public function __construct(HTMLReporter $reporter)
     {
+        $this->reporter = $reporter;
         $this->reportFilename = self::DEFAULT_REPORT_FILENAME;
         $this->currentFile = null;
     }

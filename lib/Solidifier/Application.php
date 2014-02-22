@@ -5,6 +5,7 @@ namespace Solidifier;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Gaufrette\Filesystem;
 use Puzzle\Configuration;
+use Solidifier\Reporters\HTMLReporter;
 
 class Application extends \Pimple
 {
@@ -42,8 +43,12 @@ class Application extends \Pimple
             return new EventSubscribers\Console();
         };
         
+        $this['reporter.html'] = function($c) {
+            return new Reporters\HTMLReporter();
+        };
+        
         $this['subscriber.html'] = function($c) {
-            return new EventSubscribers\HTML();
+            return new EventSubscribers\HTML($c['reporter.html']);
         };
     }
 }
