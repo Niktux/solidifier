@@ -2,21 +2,21 @@
 
 namespace Solidifier\Visitors\DependencyInjection;
 
-use Solidifier\Visitors\AbstractClassVisitor;
+use Solidifier\Visitors\ClassVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
 use Solidifier\Visitors\ClassInfo;
 use Solidifier\Dispatcher;
 
-class StrongCoupling extends AbstractClassVisitor
+class StrongCoupling extends ClassVisitor
 {
     private
         $excludePattern;
     
-    public function __construct(Dispatcher $dispatcher)
+    public function __construct()
     {
-        parent::__construct($dispatcher);
+        parent::__construct();
         
         $this->excludePattern = array();
     }

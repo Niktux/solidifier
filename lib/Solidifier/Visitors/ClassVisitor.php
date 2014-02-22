@@ -2,32 +2,19 @@
 
 namespace Solidifier\Visitors;
 
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\Namespace_;
 use Solidifier\Dispatcher;
-use Solidifier\Defect;
 
-abstract class AbstractClassVisitor extends NodeVisitorAbstract
+abstract class ClassVisitor extends AbstractVisitor
 {
     protected
-        $dispatcher,
         $currentNamespace,
         $currentClass;
-    
-    public function __construct(Dispatcher $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-    }
-    
-    protected function dispatch(Defect $event)
-    {
-        return $this->dispatcher->dispatch($event);
-    }
-    
+
     public function beforeTraverse(array $nodes)
     {
         $this->currentNamespace = null;
