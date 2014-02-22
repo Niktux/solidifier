@@ -9,27 +9,24 @@ use Solidifier\Dispatchers\TestDispatcher;
 abstract class AnalyzeTestCase extends \PHPUnit_Framework_TestCase
 {
     protected
-        $dispatcher,
-        $analyzer;
+        $dispatcher;
     
     protected function setUp()
     {
         $this->dispatcher = new TestDispatcher();
-
-        $adapter = new InMemory($this->getFiles());
-        $this->analyzer = new Analyzer($this->dispatcher, new Filesystem($adapter));
-        $this->configureAnalyzer();
     }
     
-    abstract protected function getFiles();
-    
-    protected function configureAnalyzer()
+    protected function configureAnalyzer(Analyzer $analyzer)
     {
     }
     
-    protected function analyze()
+    protected function analyze(array $files)
     {
-        $this->analyzer->run();
+        $adapter = new InMemory($files);
+        $analyzer = new Analyzer($this->dispatcher, new Filesystem($adapter));
+        $this->configureAnalyzer($analyzer);
+        
+        $analyzer->run();
         
         $events = $this->dispatcher->getEvents();
         $types = $this->extractEventTypes($events);
