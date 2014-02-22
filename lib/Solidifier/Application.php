@@ -17,16 +17,12 @@ class Application extends \Pimple
     
     private function initializeServices()
     {
-        $this['defect.subscriber'] = function($c) {
+        $this['subscriber.cli'] = function($c) {
             return new DefectSubscriber();
         };
         
         $this['event.dispatcher'] = function($c) {
-            $dispatcher = new EventDispatcher();
-
-            $dispatcher->addSubscriber($c['defect.subscriber']);
-            
-            return $dispatcher;
+            return new EventDispatcher();
         };
         
         $this['dispatcher'] = function($c) {

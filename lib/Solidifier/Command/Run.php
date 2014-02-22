@@ -31,7 +31,11 @@ class Run extends Command
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->container['defect.subscriber']->setOutput($output);
+        $dispatcher = $this->container['event.dispatcher'];
+        
+        $cli = $this->container['subscriber.cli'];
+        $cli->setOutput($output);
+        $dispatcher->addSubscriber($cli);
         
         $src = $input->getArgument('src');
         $fs = new Filesystem(new Local($src));
