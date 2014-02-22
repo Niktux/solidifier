@@ -25,7 +25,6 @@ abstract class AnalyzeTestCase extends \PHPUnit_Framework_TestCase
     
     protected function configureAnalyzer()
     {
-        
     }
     
     protected function analyze()
