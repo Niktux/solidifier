@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidifier\Dispatcher;
+namespace Solidifier\Dispatchers;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Solidifier\Dispatcher;

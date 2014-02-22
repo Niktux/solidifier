@@ -4,7 +4,7 @@ namespace Solidifier;
 
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\InMemory;
-use Solidifier\Dispatcher\TestDispatcher;
+use Solidifier\Dispatchers\TestDispatcher;
 use Solidifier\Visitors\Property\PublicAttributes;
 
 class AnalyzerTest extends \PHPUnit_Framework_TestCase

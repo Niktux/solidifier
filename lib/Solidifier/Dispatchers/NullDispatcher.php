@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidifier\Dispatcher;
+namespace Solidifier\Dispatchers;
 
 use Solidifier\Dispatcher;
 use Solidifier\Event;

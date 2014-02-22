@@ -4,7 +4,7 @@ namespace Solidifier\Visitors;
 
 use PhpParser\NodeVisitorAbstract;
 use Solidifier\Visitor;
-use Solidifier\Dispatcher\NullDispatcher;
+use Solidifier\Dispatchers\NullDispatcher;
 use Solidifier\Dispatcher;
 use Solidifier\Defect;
 
