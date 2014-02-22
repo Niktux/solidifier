@@ -17,12 +17,14 @@ class HTML implements EventSubscriberInterface
         DEFAULT_REPORT_FILENAME = 'report.html';
     
     private
+        $defects,
         $reporter,
         $reportFilename,
         $currentFile;
     
     public function __construct(HTMLReporter $reporter)
     {
+        $this->defects = array();
         $this->reporter = $reporter;
         $this->reportFilename = self::DEFAULT_REPORT_FILENAME;
         $this->currentFile = null;
@@ -53,9 +55,18 @@ class HTML implements EventSubscriberInterface
     
     public function onDefect(Defect $event)
     {
+        if(! isset($this->defects[$this->currentFile]))
+        {
+            $this->defects[$this->currentFile] = array();
+        }
+        
+        $this->defects[$this->currentFile][] = $event;
     }
     
     public function postMortemReport(TraverseEnd $event)
     {
+        $this->reporter
+            ->render($this->defects)
+            ->save($this->reportFilename);
     }
 }

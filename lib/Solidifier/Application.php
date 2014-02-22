@@ -35,6 +35,15 @@ class Application extends \Pimple
             
             return $analyzer;
         });
+        
+        $this['twig.path'] = 'views';
+        $this['twig.cache'] = false;
+        $this['twig'] = function($c) {
+            $loader = new \Twig_Loader_Filesystem($c['twig.path']);
+            return new \Twig_Environment($loader, array(
+                'cache' => $c['twig.cache'],
+            ));
+        };
     }
     
     private function initializeSubscribers()
@@ -44,7 +53,7 @@ class Application extends \Pimple
         };
         
         $this['reporter.html'] = function($c) {
-            return new Reporters\HTMLReporter();
+            return new Reporters\HTMLReporter($c['twig']);
         };
         
         $this['subscriber.html'] = function($c) {
