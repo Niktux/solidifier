@@ -5,6 +5,7 @@ namespace Solidifier;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\InMemory;
 use Solidifier\Dispatcher\TestDispatcher;
+use Solidifier\Visitors\Property\PublicAttributes;
 
 class AnalyzerTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,6 +32,7 @@ class AnalyzerTest extends \PHPUnit_Framework_TestCase
     
     public function testFoo()
     {
+        $this->analyzer->addVisitor('analyze', new PublicAttributes());
         $events = $this->analyze();        
         
         $types = array_map(function ($event) {
