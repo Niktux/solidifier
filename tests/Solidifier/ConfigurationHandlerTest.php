@@ -51,7 +51,7 @@ class ConfigurationHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $values = array(
             'property.public' => array('enabled' => false),	
-            'dependency.strongCoupling' => array('enabled' => true),	
+            'dependency.strongCoupling' => array('enabled' => true, 'excludePatterns' => array('foo')),	
         );
         
         $handler = new ConfigurationHandler($values);
