@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Gaufrette\Filesystem;
 use Solidifier\Reporters\HTMLReporter;
 use Symfony\Component\Yaml\Yaml;
+use Gaufrette\Adapter\Local;
 
 class Application extends \Pimple
 {
@@ -13,8 +14,21 @@ class Application extends \Pimple
     {
         parent::__construct();
         
+        $this->initializeFilesystem();
         $this->initializeServices();
         $this->initializeSubscribers();
+    }
+    
+    private function initializeFilesystem()
+    {
+        $this['filesystem.path'] = 'src/';
+        $this['filesystem.adapter'] = function($c) {
+            return new Local($c['filesystem.path']);    
+        };
+        
+        $this['filesystem'] = function($c) {
+            return new Filesystem($c['filesystem.adapter']);    
+        };
     }
     
     private function initializeServices()
@@ -24,9 +38,11 @@ class Application extends \Pimple
             $configuration = array();
             
             $filename = '.solidifier.yml';
-            if(is_file($filename))
+            $fs = $c['filesystem'];
+            
+            if($fs->has($filename))
             {
-                $configuration = Yaml::parse($filename);
+                $configuration = Yaml::parse($fs->read($filename));
             }
             
             return $configuration;
@@ -40,14 +56,14 @@ class Application extends \Pimple
             return new Dispatchers\EventDispatcher($c['event.dispatcher']);
         };
         
-        $this['analyzer'] = $this->protect(function(Filesystem $fs) {
-            $analyzer = new Analyzers\Analyzer($this['dispatcher'], $fs);
+        $this['analyzer'] = function($c) {
+            $analyzer = new Analyzers\Analyzer($c['dispatcher'], $c['filesystem']);
 
-            $handler = new ConfigurationHandler($this['configuration']);
+            $handler = new ConfigurationHandler($c['configuration']);
             $handler->configure($analyzer);
             
             return $analyzer;
-        });
+        };
         
         $this['twig.path'] = 'views';
         $this['twig.cache'] = false;

@@ -36,10 +36,9 @@ class Run extends Command
     {
         $this->configureOutputs($input, $output);
         
-        $src = $input->getArgument('src');
-        $fs = new Filesystem(new Local($src));
-
-        $analyzer = $this->container['analyzer']($fs);
+        $this->container['filesystem.path'] = $input->getArgument('src');
+        
+        $analyzer = $this->container['analyzer'];
         $analyzer->run();
     }
     
