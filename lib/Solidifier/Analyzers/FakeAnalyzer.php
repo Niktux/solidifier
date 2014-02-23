@@ -7,6 +7,9 @@ use Solidifier\Visitor;
 
 class FakeAnalyzer implements VisitableAnalyzer
 {
+    private
+        $visitors;
+    
     public function __construct()
     {
         $this->visitors = array();    
