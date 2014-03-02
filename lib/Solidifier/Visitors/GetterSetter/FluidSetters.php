@@ -59,11 +59,11 @@ class FluidSetters extends ContextualVisitor
         {
             if($this->currentMethod instanceof FluidSetterState)
             {
-                if($this->currentClass->type !== ObjectType::TYPE_INTERFACE
+                if($this->currentObjectType->type !== ObjectType::TYPE_INTERFACE
                 && $this->currentMethod->isValid() === false)
                 {
                     $this->dispatch(
-                       new NotFluidSetter($this->currentClass, $node)
+                       new NotFluidSetter($this->currentObjectType, $node)
                     );
                 }
             }

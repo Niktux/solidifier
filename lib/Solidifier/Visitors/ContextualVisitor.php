@@ -13,12 +13,12 @@ abstract class ContextualVisitor extends AbstractVisitor
 {
     protected
         $currentNamespace,
-        $currentClass;
+        $currentObjectType;
 
     public function beforeTraverse(array $nodes)
     {
         $this->currentNamespace = null;
-        $this->currentClass = null;
+        $this->currentObjectType = null;
     }
     
     public function enterNode(Node $node)
@@ -29,15 +29,15 @@ abstract class ContextualVisitor extends AbstractVisitor
         }
         elseif($node instanceof Class_)
         {
-            $this->currentClass = new ObjectType($this->currentNamespace, $node->name);
+            $this->currentObjectType = new ObjectType($this->currentNamespace, $node->name);
         }
         elseif($node instanceof Interface_)
         {
-            $this->currentClass = new ObjectType($this->currentNamespace, $node->name, ObjectType::TYPE_INTERFACE);
+            $this->currentObjectType = new ObjectType($this->currentNamespace, $node->name, ObjectType::TYPE_INTERFACE);
         }
         elseif($node instanceof Trait_)
         {
-            $this->currentClass = new ObjectType($this->currentNamespace, $node->name, ObjectType::TYPE_TRAIT);
+            $this->currentObjectType = new ObjectType($this->currentNamespace, $node->name, ObjectType::TYPE_TRAIT);
         }
     }
     
@@ -49,7 +49,7 @@ abstract class ContextualVisitor extends AbstractVisitor
         }
         else if($node instanceof Class_ || $node instanceof Interface_ || $node instanceof Trait_)
         {
-            $this->currentClass = null;
+            $this->currentObjectType = null;
         }
     }
 }

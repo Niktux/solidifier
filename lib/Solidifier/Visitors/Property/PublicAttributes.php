@@ -19,7 +19,7 @@ class PublicAttributes extends ContextualVisitor
                 foreach($node->props as $property)
                 {
                     $this->dispatch(
-                        new \Solidifier\Defects\PublicAttribute($this->currentClass, $property->name, $node)
+                        new \Solidifier\Defects\PublicAttribute($this->currentObjectType, $property->name, $node)
                     );
                 }
             }   

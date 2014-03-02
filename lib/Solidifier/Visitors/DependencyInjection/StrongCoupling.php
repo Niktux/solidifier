@@ -32,7 +32,7 @@ class StrongCoupling extends ContextualVisitor
     {
         parent::enterNode($node);
         
-        if($this->currentClass instanceof ObjectType)
+        if($this->currentObjectType instanceof ObjectType)
         {
             if($node instanceof New_)
             {
@@ -41,7 +41,7 @@ class StrongCoupling extends ContextualVisitor
                     if($this->isAnAllowedObjectType($node->class) === false)
                     {
                         $this->dispatch(
-                            new \Solidifier\Defects\StrongCoupling($this->currentClass, $node)
+                            new \Solidifier\Defects\StrongCoupling($this->currentObjectType, $node)
                         );
                     }
                 }
