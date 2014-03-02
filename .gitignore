@@ -16,3 +16,4 @@ report/
 
 # test data
 lib/.solidifier.yml
+report.html
