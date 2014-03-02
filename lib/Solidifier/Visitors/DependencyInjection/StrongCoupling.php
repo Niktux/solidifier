@@ -2,14 +2,14 @@
 
 namespace Solidifier\Visitors\DependencyInjection;
 
-use Solidifier\Visitors\ClassVisitor;
+use Solidifier\Visitors\ContextualVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
 use Solidifier\Visitors\ObjectType;
 use Solidifier\Dispatcher;
 
-class StrongCoupling extends ClassVisitor
+class StrongCoupling extends ContextualVisitor
 {
     private
         $excludePattern;

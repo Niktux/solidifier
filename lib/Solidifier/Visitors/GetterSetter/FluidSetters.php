@@ -2,7 +2,7 @@
 
 namespace Solidifier\Visitors\GetterSetter;
 
-use Solidifier\Visitors\ClassVisitor;
+use Solidifier\Visitors\ContextualVisitor;
 use Solidifier\Visitors\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -10,7 +10,7 @@ use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Expr\Variable;
 use Solidifier\Defects\NotFluidSetter;
 
-class FluidSetters extends ClassVisitor
+class FluidSetters extends ContextualVisitor
 {
     private
         $currentMethod;

@@ -9,7 +9,7 @@ use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\Namespace_;
 use Solidifier\Dispatcher;
 
-abstract class ClassVisitor extends AbstractVisitor
+abstract class ContextualVisitor extends AbstractVisitor
 {
     protected
         $currentNamespace,

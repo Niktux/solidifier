@@ -2,11 +2,11 @@
 
 namespace Solidifier\Visitors\Property;
 
-use Solidifier\Visitors\ClassVisitor;
+use Solidifier\Visitors\ContextualVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Property;
 
-class PublicAttributes extends ClassVisitor
+class PublicAttributes extends ContextualVisitor
 {
     public function enterNode(Node $node)
     {

@@ -2,12 +2,12 @@
 
 namespace Solidifier\Visitors\DependencyInjection;
 
-use Solidifier\Visitors\ClassVisitor;
+use Solidifier\Visitors\ContextualVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
 
-class MagicalInstantiation extends ClassVisitor
+class MagicalInstantiation extends ContextualVisitor
 {
     public function enterNode(Node $node)
     {
