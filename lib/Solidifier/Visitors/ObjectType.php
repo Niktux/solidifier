@@ -2,7 +2,7 @@
 
 namespace Solidifier\Visitors;
 
-class ClassInfo
+class ObjectType
 {
     const
         TYPE_CLASS = 'class',
@@ -11,15 +11,15 @@ class ClassInfo
     
     public
         $namespace,
-        $classname,
         $name,
+        $fullname,
         $type;
     
-    public function __construct($namespace, $classname, $type = self::TYPE_CLASS)
+    public function __construct($namespace, $name, $type = self::TYPE_CLASS)
     {
         $this->namespace = $namespace;
-        $this->classname = $classname;
-        $this->name = empty($namespace) ? $classname : "$namespace\\$classname";
+        $this->name = $name;
+        $this->fullname = empty($namespace) ? $name : "$namespace\\$name";
         $this->type = $type;    
     }
 }

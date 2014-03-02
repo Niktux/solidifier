@@ -3,20 +3,20 @@
 namespace Solidifier\Defects;
 
 use Solidifier\Defect;
-use Solidifier\Visitors\ClassInfo;
+use Solidifier\Visitors\ObjectType;
 use PhpParser\Node\Stmt\Property;
 
 class PublicAttribute extends Defect
 {
     private
-        $classInfo,
+        $objectType,
         $property;
         
-    public function __construct(ClassInfo $classInfo, $property, Property $node)
+    public function __construct(ObjectType $objectType, $property, Property $node)
     {
         parent::__construct($node, self::WARNING);
 
-        $this->classInfo = $classInfo;    
+        $this->objectType = $objectType;    
         $this->property = $property;    
     }    
     
@@ -25,8 +25,8 @@ class PublicAttribute extends Defect
         return sprintf(
             'Public property <comment>%s</comment> in %s <info>%s</info>',
             $this->property,
-            $this->classInfo->type,
-            $this->classInfo->name
+            $this->objectType->type,
+            $this->objectType->fullname
         );
     }
 }

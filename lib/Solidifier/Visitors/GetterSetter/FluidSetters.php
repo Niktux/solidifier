@@ -3,7 +3,7 @@
 namespace Solidifier\Visitors\GetterSetter;
 
 use Solidifier\Visitors\ClassVisitor;
-use Solidifier\Visitors\ClassInfo;
+use Solidifier\Visitors\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Return_;
@@ -59,7 +59,7 @@ class FluidSetters extends ClassVisitor
         {
             if($this->currentMethod instanceof FluidSetterState)
             {
-                if($this->currentClass->type !== ClassInfo::TYPE_INTERFACE
+                if($this->currentClass->type !== ObjectType::TYPE_INTERFACE
                 && $this->currentMethod->isValid() === false)
                 {
                     $this->dispatch(

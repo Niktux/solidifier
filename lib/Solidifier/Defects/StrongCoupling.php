@@ -3,27 +3,27 @@
 namespace Solidifier\Defects;
 
 use Solidifier\Defect;
-use Solidifier\Visitors\ClassInfo;
+use Solidifier\Visitors\ObjectType;
 use PhpParser\Node\Expr\New_;
 
 class StrongCoupling extends Defect
 {
     private
-        $classInfo;
+        $objectType;
         
-    public function __construct(ClassInfo $classInfo, New_ $node)
+    public function __construct(ObjectType $objectType, New_ $node)
     {
         parent::__construct($node, self::WARNING);
         
-        $this->classInfo = $classInfo;
+        $this->objectType = $objectType;
     }    
     
     public function getMessage()
     {
         return sprintf(
             'Allocation in %s <info>%s</info> (instanciate %s)',
-            $this->classInfo->type,
-            $this->classInfo->name,
+            $this->objectType->type,
+            $this->objectType->fullname,
             $this->node->class
         );
     }

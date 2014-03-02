@@ -29,15 +29,15 @@ abstract class ClassVisitor extends AbstractVisitor
         }
         elseif($node instanceof Class_)
         {
-            $this->currentClass = new ClassInfo($this->currentNamespace, $node->name);
+            $this->currentClass = new ObjectType($this->currentNamespace, $node->name);
         }
         elseif($node instanceof Interface_)
         {
-            $this->currentClass = new ClassInfo($this->currentNamespace, $node->name, ClassInfo::TYPE_INTERFACE);
+            $this->currentClass = new ObjectType($this->currentNamespace, $node->name, ObjectType::TYPE_INTERFACE);
         }
         elseif($node instanceof Trait_)
         {
-            $this->currentClass = new ClassInfo($this->currentNamespace, $node->name, ClassInfo::TYPE_TRAIT);
+            $this->currentClass = new ObjectType($this->currentNamespace, $node->name, ObjectType::TYPE_TRAIT);
         }
     }
     

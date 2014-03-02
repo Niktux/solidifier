@@ -6,7 +6,7 @@ use Solidifier\Visitors\ClassVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
-use Solidifier\Visitors\ClassInfo;
+use Solidifier\Visitors\ObjectType;
 use Solidifier\Dispatcher;
 
 class StrongCoupling extends ClassVisitor
@@ -32,7 +32,7 @@ class StrongCoupling extends ClassVisitor
     {
         parent::enterNode($node);
         
-        if($this->currentClass instanceof ClassInfo)
+        if($this->currentClass instanceof ObjectType)
         {
             if($node instanceof New_)
             {
