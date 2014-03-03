@@ -35,31 +35,35 @@ class InterfaceSegregation extends ContextualVisitor
         {
             if($this->currentMethod !== null)
             {
-                $type = $node->type;
-                
-                if($type instanceof Name)
+                if($node->type instanceof Name)
                 {
-                    $name = (string) $type;
-                    if($type->isFullyQualified() === false)
-                    {
-                        $name = $this->currentNamespace . '\\' . $name;
-                    }
-                    
-                    if(isset($this->types[$name]))
-                    {
-                        $objectTypeType= $this->types[$name];
-                        
-                        if($objectTypeType !== ObjectType::TYPE_INTERFACE)
-                        {
-                            $this->dispatch(new DependencyUponImplementation(
-                                $node,
-                                $name,
-                                $objectTypeType,
-                                $this->currentMethod
-                            ));
-                        }
-                    }
+                    $this->checkIfTypeIsAnInterface($node, $node->type);
                 }
+            }
+        }
+    }
+    
+    private function checkIfTypeIsAnInterface(Node $node, Name $type)
+    {
+        $name = (string) $type;
+        
+        if($type->isFullyQualified() === false)
+        {
+            $name = $this->currentNamespace . '\\' . $name;
+        }
+        
+        if(isset($this->types[$name]))
+        {
+            $objectTypeType= $this->types[$name];
+            
+            if($objectTypeType !== ObjectType::TYPE_INTERFACE)
+            {
+                $this->dispatch(new DependencyUponImplementation(
+                    $node,
+                    $name,
+                    $objectTypeType,
+                    $this->currentMethod
+                ));
             }
         }
     }
