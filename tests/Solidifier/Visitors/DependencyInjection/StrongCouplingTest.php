@@ -57,6 +57,33 @@ class StrongCouplingTest extends AnalyzeTestCase
         $this->assertContainsType(self::DEFECT_TYPE, 2);
     }
     
+    public function testAllowedClass()
+    {
+        $this->visitor->addAllowedClass('Foo');
+        
+        $this->analyze(array(
+            'foo.php' => '<?php
+            class Foo
+            {
+                public function bar()
+                {
+                    $a = new Baz(new Bar());
+                }
+            }
+
+            class Baz 
+            {
+                public function boo()
+                {
+                    return new Foo();
+                }
+            }           
+            ',
+        ));
+    
+        $this->assertContainsType(self::DEFECT_TYPE, 1);
+    }
+    
     public function testOutsideClass()
     {
         $this->analyze(array(

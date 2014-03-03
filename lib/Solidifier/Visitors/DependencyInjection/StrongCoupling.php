@@ -12,13 +12,22 @@ use Solidifier\Dispatcher;
 class StrongCoupling extends ContextualVisitor
 {
     private
+        $allowedClass,
         $excludePattern;
     
     public function __construct()
     {
         parent::__construct();
         
+        $this->allowedClass = array();
         $this->excludePattern = array();
+    }
+    
+    public function addAllowedClass($fullyQualifiedClassName)
+    {
+        $this->allowedClass[] = $fullyQualifiedClassName;
+        
+        return $this;
     }
     
     public function addExcludePattern($regex)
@@ -36,15 +45,28 @@ class StrongCoupling extends ContextualVisitor
             {
                 if($node->class instanceof Name)
                 {
-                    if($this->isAnAllowedObjectType($node->class) === false)
-                    {
-                        $this->dispatch(
-                            new \Solidifier\Defects\StrongCoupling($this->currentObjectType, $node)
-                        );
-                    }
+                    return $this->enterNewName($node);
                 }
             }
         }
+    }
+    
+    private function enterNewName(New_ $node)
+    {
+        if($this->isCurrentClassAllowedToInstanciateObjects() === false)
+        {
+            if($this->isAnAllowedObjectType($node->class) === false)
+            {
+                $this->dispatch(
+                    new \Solidifier\Defects\StrongCoupling($this->currentObjectType, $node)
+                );
+            }
+        }
+    }
+    
+    private function isCurrentClassAllowedToInstanciateObjects()
+    {
+        return in_array($this->currentObjectType->fullname, $this->allowedClass);
     }
     
     private function isAnAllowedObjectType($objectType)

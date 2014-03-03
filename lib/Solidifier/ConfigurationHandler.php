@@ -73,6 +73,14 @@ class ConfigurationHandler
                     }            
                 }
                 
+                if(isset($config['allowedClasses']))
+                {
+                    foreach($config['allowedClasses'] as $fullyQualifiedClassName)
+                    {
+                        $visitor->addAllowedClass($fullyQualifiedClassName);
+                    }            
+                }
+                
                return $visitor;
             },
             
