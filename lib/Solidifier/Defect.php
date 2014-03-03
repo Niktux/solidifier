@@ -8,6 +8,7 @@ abstract class Defect extends Event
 {
     const
         EVENT_NAME = 'defect';    
+    
     protected
         $node,
         $severity;
