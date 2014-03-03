@@ -7,6 +7,7 @@ use Solidifier\Visitors\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt\ClassMethod;
 use Solidifier\Defects\NotFluidSetter;
 
 class FluidSetters extends ContextualVisitor
