@@ -10,11 +10,13 @@ abstract class Defect extends Event
         EVENT_NAME = 'defect';    
     
     protected
-        $node;
+        $node,
+        $context;
     
     public function __construct(Node $node)
     {
         $this->node = $node;
+        $this->context = null;
     }
             
     public function getLine()
@@ -25,6 +27,23 @@ abstract class Defect extends Event
     public function getNode()
     {
         return $this->node;
+    }
+
+    public function getContext()
+    {
+        if($this->context instanceof Node)
+        {
+            return $this->context;
+        }
+        
+        return $this->node;
+    }
+    
+    public function setContext(Node $contextNode)
+    {
+        $this->context = $contextNode;
+        
+        return $this;
     }
     
     abstract public function getMessage();

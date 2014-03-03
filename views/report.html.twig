@@ -58,8 +58,7 @@
             <td>
                 {{ defect.formattedMessage|raw }}
                 <br>
-                {% set nodes = [defect.node] %}
-                <pre><code>{{ printer.prettyPrint(nodes) }}</code></pre>
+                <pre><code>{{ printer.prettyPrint([defect.context]) }}</code></pre>
             </td>
         </tr>
         {% endfor %}

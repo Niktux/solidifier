@@ -58,12 +58,16 @@ class InterfaceSegregation extends ContextualVisitor
             
             if($objectTypeType !== ObjectType::TYPE_INTERFACE)
             {
-                $this->dispatch(new DependencyUponImplementation(
+                $defect = new DependencyUponImplementation(
                     $node,
                     $name,
                     $objectTypeType,
-                    $this->currentMethod
-                ));
+                    $this->currentMethod->name
+                );
+                
+                $defect->setContext($this->currentMethod);
+                
+                $this->dispatch($defect);
             }
         }
     }

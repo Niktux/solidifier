@@ -47,7 +47,7 @@ abstract class ContextualVisitor extends AbstractVisitor
         }
         elseif($node instanceof ClassMethod)
         {
-            $this->currentMethod = $node->name;
+            $this->currentMethod = $node;
         }
         
         $this->enter($node);
