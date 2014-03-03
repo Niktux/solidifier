@@ -10,8 +10,7 @@ abstract class Defect extends Event
         EVENT_NAME = 'defect';    
     
     protected
-        $node,
-        $severity;
+        $node;
     
     public function __construct(Node $node)
     {
