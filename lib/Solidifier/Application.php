@@ -7,6 +7,7 @@ use Gaufrette\Filesystem;
 use Solidifier\Reporters\HTMLReporter;
 use Symfony\Component\Yaml\Yaml;
 use Gaufrette\Adapter\Local;
+use Solidifier\Visitors\PreAnalyze\ObjectTypes;
 
 class Application extends \Pimple
 {
@@ -59,7 +60,7 @@ class Application extends \Pimple
         $this['analyzer'] = function($c) {
             $analyzer = new Analyzers\Analyzer($c['dispatcher'], $c['filesystem']);
 
-            $handler = new ConfigurationHandler($c['configuration']);
+            $handler = new ConfigurationHandler($c['configuration'], $c['objectTypes.list']);
             $handler->configure($analyzer);
             
             return $analyzer;
@@ -72,6 +73,10 @@ class Application extends \Pimple
             return new \Twig_Environment($loader, array(
                 'cache' => $c['twig.cache'],
             ));
+        };
+        
+        $this['objectTypes.list'] = function($c) {
+            return new ObjectTypes();    
         };
     }
     

@@ -3,6 +3,7 @@
 namespace Solidifier;
 
 use Solidifier\Analyzers\FakeAnalyzer;
+use Solidifier\Visitors\PreAnalyze\ObjectTypes;
 
 class ConfigurationHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,7 +42,7 @@ class ConfigurationHandlerTest extends \PHPUnit_Framework_TestCase
     
     public function testPassThru()
     {
-        $handler = new ConfigurationHandler(array());
+        $handler = new ConfigurationHandler(array(), new ObjectTypes());
         $handler->configure($this->analyzer);
         
         $this->assertHasVisitor('Solidifier\Visitors\Property\PublicAttributes');
@@ -54,7 +55,7 @@ class ConfigurationHandlerTest extends \PHPUnit_Framework_TestCase
             'dependency.strongCoupling' => array('enabled' => true, 'excludePatterns' => array('foo')),	
         );
         
-        $handler = new ConfigurationHandler($values);
+        $handler = new ConfigurationHandler($values, new ObjectTypes());
         $handler->configure($this->analyzer);     
 
         $this->assertNotHasVisitor('Solidifier\Visitors\Property\PublicAttributes');

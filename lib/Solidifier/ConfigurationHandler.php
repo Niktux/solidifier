@@ -6,16 +6,19 @@ use Solidifier\Visitors\Property\PublicAttributes;
 use Solidifier\Visitors\GetterSetter\FluidSetters;
 use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
+use Solidifier\Visitors\PreAnalyze\ObjectTypes;
 
 class ConfigurationHandler
 {
     private
         $configuration,
+        $objectTypesList,
         $visitors;
     
-    public function __construct(array $configuration)
+    public function __construct(array $configuration, ObjectTypes $objectTypesList)
     {
-        $this->configuration = $configuration;    
+        $this->configuration = $configuration;
+        $this->objectTypesList = $objectTypesList;    
         
         $this->initializeVisitors();
     }
@@ -28,7 +31,14 @@ class ConfigurationHandler
     
     private function addPreAnalyzeVisitors(VisitableAnalyzer $analyzer)
     {
-        $traverse = 'preAnalyze';
+        $traverseName = 'preAnalyze';
+        
+        // this visitor must not be disabled
+        $analyzer->addVisitor($traverseName, $this->objectTypesList);
+        
+        $visitors = array();
+        
+        return $this->addVisitors($analyzer, $visitors, $traverseName);
     }
     
     private function initializeVisitors()
@@ -69,9 +79,12 @@ class ConfigurationHandler
     
     private function addAnalyzeVisitors(VisitableAnalyzer $analyzer)
     {
-        $traverse = 'analyze';
-        
-        foreach($this->visitors as $key => $closure)
+        return $this->addVisitors($analyzer, $this->visitors, 'analyze');
+    }
+    
+    private function addVisitors(VisitableAnalyzer $analyzer, array $visitors, $traverse)
+    {
+        foreach($visitors as $key => $closure)
         {
             $config = array();
             if(isset($this->configuration[$key]))
