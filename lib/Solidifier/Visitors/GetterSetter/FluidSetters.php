@@ -24,25 +24,41 @@ class FluidSetters extends ContextualVisitor
     {
         if($node instanceof ClassMethod)
         {
-            if(strtolower(substr($node->name, 0, 3)) === 'set')
-            {
-                $this->currentMethodState = new FluidSetterState($node->name);
-            }
+            return $this->enterClassMethod($node);
         }
-        elseif($node instanceof Return_)
+        
+        if($node instanceof Return_)
         {
-            if($this->currentMethodState instanceof FluidSetterState)
+            return $this->enterReturn($node);
+        }
+    }
+    
+    private function enterClassMethod(ClassMethod $node)
+    {
+        if($this->isASetter($node->name))
+        {
+            $this->currentMethodState = new FluidSetterState($node->name);
+        }
+    }
+    
+    private function isASetter($methodName)
+    {
+        return strtolower(substr($methodName, 0, 3)) === 'set';
+    }
+    
+    private function enterReturn(Return_ $node)
+    {
+        if($this->currentMethodState instanceof FluidSetterState)
+        {
+            $this->currentMethodState->returnCount++;
+            
+            if($node->expr instanceof Variable)
             {
-                $this->currentMethodState->returnCount++;
-                
-                if($node->expr instanceof Variable)
+                if($node->expr->name === 'this')
                 {
-                    if($node->expr->name === 'this')
-                    {
-                        $this->currentMethodState->returnThis = true;
-                    }        
-                }                
-            }
+                    $this->currentMethodState->returnThis = true;
+                }        
+            }                
         }
     }
     
