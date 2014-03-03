@@ -7,6 +7,7 @@ use Solidifier\Visitors\GetterSetter\FluidSetters;
 use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 use Solidifier\Visitors\PreAnalyze\ObjectTypes;
+use Solidifier\Visitors\DependencyInjection\InterfaceSegregation;
 
 class ConfigurationHandler
 {
@@ -73,6 +74,10 @@ class ConfigurationHandler
                 }
                 
                return $visitor;
+            },
+            
+            'dependency.interfaceSegregation' => function(array $config) {
+                return new InterfaceSegregation($this->objectTypesList);    
             },
         );
     }
