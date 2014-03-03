@@ -5,9 +5,9 @@ namespace Solidifier\Visitors\GetterSetter;
 class FluidSetterState
 {
     public
-    $currentMethod,
-    $returnCount,
-    $returnThis;
+        $currentMethod,
+        $returnCount,
+        $returnThis;
 
     public function __construct($name)
     {
