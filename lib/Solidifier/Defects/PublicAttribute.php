@@ -23,7 +23,7 @@ class PublicAttribute extends Defect
     public function getMessage()
     {
         return sprintf(
-            'Public property <comment>%s</comment> in %s <info>%s</info>',
+            'Public property <id>%s</id> in %s <type>%s</type>',
             $this->property,
             $this->objectType->type,
             $this->objectType->fullname

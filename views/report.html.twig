@@ -51,7 +51,8 @@
     <table class="table table-bordered">
         {% for defect in fileDefects %}
         <tr>
-            <td>{{ defect.message }}</td>
+            <td>{{ defect.line }}</td>
+            <td>{{ defect.formattedMessage|raw }}</td>
         </tr>
         {% endfor %}
     </table>

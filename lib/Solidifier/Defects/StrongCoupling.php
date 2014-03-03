@@ -21,7 +21,7 @@ class StrongCoupling extends Defect
     public function getMessage()
     {
         return sprintf(
-            'Allocation in %s <info>%s</info> (instanciate %s)',
+            'Allocation in %s <type>%s</type> (instanciate %s)',
             $this->objectType->type,
             $this->objectType->fullname,
             $this->node->class

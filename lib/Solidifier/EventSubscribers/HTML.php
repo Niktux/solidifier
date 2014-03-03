@@ -60,7 +60,17 @@ class HTML implements EventSubscriberInterface
             $this->defects[$this->currentFile] = array();
         }
         
+        $event->formattedMessage = $this->formatMessage($event->getMessage());
         $this->defects[$this->currentFile][] = $event;
+    }
+    
+    private function formatMessage($message)
+    {
+        return strtr($message, array(
+            'id>' => 'strong>',
+            'type>' => 'strong>',
+            'method>' => 'i>',
+        ));
     }
     
     public function postMortemReport(TraverseEnd $event)

@@ -52,10 +52,19 @@ class Console implements EventSubscriberInterface
             "<fg=white;options=bold>%s @ l%d</fg=white;options=bold> : %s",
             $this->currentFile,
             $event->getLine(),
-            $event->getMessage()
+            $this->formatMessage($event->getMessage())
         ));
         
         $this->counter++;
+    }
+    
+    private function formatMessage($message)
+    {
+        return strtr($message, array(
+            'id>' => 'comment>',
+            'type>' => 'info>',
+            'method>' => 'info>',
+        ));
     }
     
     public function postMortemReport(TraverseEnd $event)

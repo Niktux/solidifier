@@ -24,7 +24,7 @@ class DependencyUponImplementation extends Defect
     public function getMessage()
     {
         return sprintf(
-            'Parameter <comment>%s</comment> is typed as %s <comment>%s</comment> (instead of using an interface) in method <info>%s()</info>',
+            'Parameter <id>%s</id> is typed as %s <type>%s</type> (instead of using an interface) in method <method>%s()</method>',
             $this->node->name,
             $this->parameterType,
             $this->parameterTypeName,

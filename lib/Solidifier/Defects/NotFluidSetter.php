@@ -21,7 +21,7 @@ class NotFluidSetter extends Defect
     public function getMessage()
     {
         return sprintf(
-            'Method <info>%s</info>::<comment>%s</comment>() does not follow fluid interface',
+            'Method <type>%s</type>::<id>%s</id>() does not follow fluid interface',
             $this->objectType->fullname,
             $this->node->name
         );
