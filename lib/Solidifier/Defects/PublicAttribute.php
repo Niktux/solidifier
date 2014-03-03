@@ -14,7 +14,7 @@ class PublicAttribute extends Defect
         
     public function __construct(ObjectType $objectType, $property, Property $node)
     {
-        parent::__construct($node, self::WARNING);
+        parent::__construct($node);
 
         $this->objectType = $objectType;    
         $this->property = $property;    

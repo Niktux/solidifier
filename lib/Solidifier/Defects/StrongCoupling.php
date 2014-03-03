@@ -13,7 +13,7 @@ class StrongCoupling extends Defect
         
     public function __construct(ObjectType $objectType, New_ $node)
     {
-        parent::__construct($node, self::WARNING);
+        parent::__construct($node);
         
         $this->objectType = $objectType;
     }    

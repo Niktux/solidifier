@@ -13,7 +13,7 @@ class NotFluidSetter extends Defect
         
     public function __construct(ObjectType $objectType, ClassMethod $node)
     {
-        parent::__construct($node, self::WARNING);
+        parent::__construct($node);
 
         $this->objectType = $objectType;        
     }    
