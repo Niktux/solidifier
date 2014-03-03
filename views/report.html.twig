@@ -16,6 +16,9 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
+    <!--  Highlight.js -->
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/tomorrow-night-bright.min.css">
+    
     <style>
     body {
         padding-top: 50px;
@@ -52,7 +55,12 @@
         {% for defect in fileDefects %}
         <tr>
             <td>{{ defect.line }}</td>
-            <td>{{ defect.formattedMessage|raw }}</td>
+            <td>
+                {{ defect.formattedMessage|raw }}
+                <br>
+                {% set nodes = [defect.node] %}
+                <pre><code>{{ printer.prettyPrint(nodes) }}</code></pre>
+            </td>
         </tr>
         {% endfor %}
     </table>
@@ -64,5 +72,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="vendor/twitter/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!--  Highlight.js -->
+    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

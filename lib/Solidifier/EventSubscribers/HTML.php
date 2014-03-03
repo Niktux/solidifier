@@ -69,7 +69,7 @@ class HTML implements EventSubscriberInterface
         return strtr($message, array(
             'id>' => 'strong>',
             'type>' => 'strong>',
-            'method>' => 'i>',
+            'method>' => 'strong>',
         ));
     }
     

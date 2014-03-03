@@ -23,5 +23,10 @@ abstract class Defect extends Event
         return $this->node->getLine();    
     }
     
+    public function getNode()
+    {
+        return $this->node;
+    }
+    
     abstract public function getMessage();
 }

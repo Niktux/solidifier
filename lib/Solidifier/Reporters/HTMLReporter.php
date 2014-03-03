@@ -2,6 +2,8 @@
 
 namespace Solidifier\Reporters;
 
+use PhpParser\PrettyPrinter\Standard;
+
 class HTMLReporter
 {
     private
@@ -16,11 +18,14 @@ class HTMLReporter
     
     public function render(array $defects)
     {
+        $prettyPrint = new Standard();
+        
         $this->content = $this->twig->render(
            'report.html.twig',
             array(
                 'project' => 'Solidifier',
-                'defects' => $defects
+                'defects' => $defects,
+                'printer' => $prettyPrint,
         ));
         
         return $this;
