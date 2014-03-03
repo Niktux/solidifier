@@ -117,4 +117,22 @@ class FluidSetterTest extends AnalyzeTestCase
     
         $this->assertContainsType(self::DEFECT_TYPE, 1);
     }
+    
+    public function testFakeReturnThis()
+    {
+        $this->analyze(array(
+            'foo.php' => '<?php
+            class Foo
+            {
+                private $bar;
+                        
+                public function setBaz($b)
+                {
+                    return $this->setBar($b);
+                }                        
+            }',
+        ));
+    
+        $this->assertContainsType(self::DEFECT_TYPE, 1);
+    }
 }
