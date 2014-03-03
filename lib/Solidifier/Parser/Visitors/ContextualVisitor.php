@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidifier\Visitors;
+namespace Solidifier\Parser\Visitors;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
@@ -9,6 +9,7 @@ use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\Namespace_;
 use Solidifier\Dispatcher;
 use PhpParser\Node\Stmt\ClassMethod;
+use Solidifier\Visitors\ObjectType;
 
 abstract class ContextualVisitor extends AbstractVisitor
 {
@@ -17,14 +18,16 @@ abstract class ContextualVisitor extends AbstractVisitor
         $currentObjectType,
         $currentMethod;
 
-    public function beforeTraverse(array $nodes)
+    final public function beforeTraverse(array $nodes)
     {
         $this->currentNamespace = null;
         $this->currentObjectType = null;
         $this->currentMethod = null;
+        
+        $this->before($nodes);
     }
     
-    public function enterNode(Node $node)
+    final public function enterNode(Node $node)
     {
         if($node instanceof Namespace_)
         {
@@ -46,9 +49,11 @@ abstract class ContextualVisitor extends AbstractVisitor
         {
             $this->currentMethod = $node->name;
         }
+        
+        $this->enter($node);
     }
     
-    public function leaveNode(Node $node)
+    final public function leaveNode(Node $node)
     {
         if($node instanceof Namespace_)
         {
@@ -62,5 +67,32 @@ abstract class ContextualVisitor extends AbstractVisitor
         {
             $this->currentMethod = null;
         }
+        
+        $this->leave($node);
+    }
+    
+    final public function afterTraverse(array $nodes)
+    {
+        $this->after($nodes);
+    }
+    
+    protected function before(array $nodes)
+    {
+        
+    }
+    
+    protected function enter(Node $node)
+    {
+        
+    }
+    
+    protected function leave(Node $node)
+    {
+        
+    }
+    
+    protected function after(array $nodes)
+    {
+        
     }
 }

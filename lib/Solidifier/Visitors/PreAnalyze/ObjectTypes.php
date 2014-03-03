@@ -2,7 +2,7 @@
 
 namespace Solidifier\Visitors\PreAnalyze;
 
-use Solidifier\Visitors\ContextualVisitor;
+use Solidifier\Parser\Visitors\ContextualVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
@@ -20,10 +20,8 @@ class ObjectTypes extends ContextualVisitor
         $this->types = array();
     }
     
-    public function enterNode(Node $node)
+    protected function enter(Node $node)
     {
-        parent::enterNode($node);
-        
         if($node instanceof Class_ || $node instanceof Interface_ || $node instanceof Trait_)
         {
             $this->types[$this->currentObjectType->fullname] = $this->currentObjectType->type;

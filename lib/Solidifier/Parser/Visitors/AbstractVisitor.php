@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidifier\Visitors;
+namespace Solidifier\Parser\Visitors;
 
 use PhpParser\NodeVisitorAbstract;
 use Solidifier\Visitor;

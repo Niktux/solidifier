@@ -2,7 +2,7 @@
 
 namespace Solidifier\Visitors\DependencyInjection;
 
-use Solidifier\Visitors\ContextualVisitor;
+use Solidifier\Parser\Visitors\ContextualVisitor;
 use Solidifier\Visitors\PreAnalyze\ObjectTypes;
 use PhpParser\Node;
 use PhpParser\Node\Param;
@@ -24,17 +24,13 @@ class InterfaceSegregation extends ContextualVisitor
         $this->types = array();
     }    
     
-    public function beforeTraverse(array $nodes)
+    public function before(array $nodes)
     {
-        parent::beforeTraverse($nodes);
-        
         $this->types = $this->objectTypes->getObjectTypes();
     }
     
-    public function enterNode(Node $node)
+    protected function enter(Node $node)
     {
-        parent::enterNode($node);
-        
         if($node instanceof Param)
         {
             if($this->currentMethod !== null)

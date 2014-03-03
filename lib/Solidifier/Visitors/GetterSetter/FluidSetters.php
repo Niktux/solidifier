@@ -2,7 +2,7 @@
 
 namespace Solidifier\Visitors\GetterSetter;
 
-use Solidifier\Visitors\ContextualVisitor;
+use Solidifier\Parser\Visitors\ContextualVisitor;
 use Solidifier\Visitors\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Return_;
@@ -15,17 +15,13 @@ class FluidSetters extends ContextualVisitor
     private
         $currentMethodState;
     
-    public function beforeTraverse(array $nodes)
+    protected function before(array $nodes)
     {
-        parent::beforeTraverse($nodes);
-        
         $this->currentMethodState = null;
     }
     
-    public function enterNode(Node $node)
+    protected function enter(Node $node)
     {
-        parent::enterNode($node);
-        
         if($node instanceof ClassMethod)
         {
             if(strtolower(substr($node->name, 0, 3)) === 'set')
@@ -50,10 +46,8 @@ class FluidSetters extends ContextualVisitor
         }
     }
     
-    public function leaveNode(Node $node)
+    protected function leave(Node $node)
     {
-        parent::leaveNode($node);
-        
         if($node instanceof ClassMethod)
         {
             if($this->currentMethodState instanceof FluidSetterState)

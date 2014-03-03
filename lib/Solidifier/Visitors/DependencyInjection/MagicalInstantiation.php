@@ -2,14 +2,14 @@
 
 namespace Solidifier\Visitors\DependencyInjection;
 
-use Solidifier\Visitors\ContextualVisitor;
+use Solidifier\Parser\Visitors\ContextualVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
 
 class MagicalInstantiation extends ContextualVisitor
 {
-    public function enterNode(Node $node)
+    protected function enter(Node $node)
     {
         if($node instanceof New_)
         {

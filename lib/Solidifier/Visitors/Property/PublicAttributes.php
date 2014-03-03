@@ -2,16 +2,14 @@
 
 namespace Solidifier\Visitors\Property;
 
-use Solidifier\Visitors\ContextualVisitor;
+use Solidifier\Parser\Visitors\ContextualVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Property;
 
 class PublicAttributes extends ContextualVisitor
 {
-    public function enterNode(Node $node)
+    protected function enter(Node $node)
     {
-        parent::enterNode($node);
-        
         if($node instanceof Property)
         {
             if($node->isPublic())

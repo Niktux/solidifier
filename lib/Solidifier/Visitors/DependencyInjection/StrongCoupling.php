@@ -2,7 +2,7 @@
 
 namespace Solidifier\Visitors\DependencyInjection;
 
-use Solidifier\Visitors\ContextualVisitor;
+use Solidifier\Parser\Visitors\ContextualVisitor;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
@@ -28,10 +28,8 @@ class StrongCoupling extends ContextualVisitor
         return $this;
     }
     
-    public function enterNode(Node $node)
+    protected function enter(Node $node)
     {
-        parent::enterNode($node);
-        
         if($this->currentObjectType instanceof ObjectType)
         {
             if($node instanceof New_)
