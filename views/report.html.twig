@@ -99,7 +99,7 @@
                             <div class="accordion-inner">
                                 <ul>
                                     {% for file, fileDefects in files %}
-                                        <li><a href="#{{ file }}">{{ file|split('/')|last }}</a></li>
+                                        <li><a href="#{{ file }}">{{ file|split('/')|last }} ({{ fileDefects|length }})</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
