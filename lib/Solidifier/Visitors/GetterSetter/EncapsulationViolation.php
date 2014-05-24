@@ -16,25 +16,25 @@ class EncapsulationViolation extends ContextualVisitor
     
     protected function enter(Node $node)
     {
-       if($node instanceof Class_)
-       {
-           $this->privateAttributes = array();
-           $this->publicMethods = array();
-       } 
-       elseif($node instanceof Property)
-       {
-           if($node->isPrivate())
-           {
-               foreach($node->props as $property)
-               {
-                   $this->privateAttributes[$property->name] = $node;
-               }
-           }
-       } 
-       elseif($node instanceof ClassMethod)
-       {
-           if($node->isPublic())
-           {
+        if($node instanceof Class_)
+        {
+            $this->privateAttributes = array();
+            $this->publicMethods = array();
+        } 
+        elseif($node instanceof Property)
+        {
+            if($node->isPrivate())
+            {
+                foreach($node->props as $property)
+                {
+                    $this->privateAttributes[$property->name] = $node;
+                }
+            }
+        } 
+        elseif($node instanceof ClassMethod)
+        {
+            if($node->isPublic())
+            {
                 $methodName = $node->name;
 
                 if($this->isGetterOrSetter($methodName))
@@ -71,7 +71,7 @@ class EncapsulationViolation extends ContextualVisitor
                     if(count($this->publicMethods[$key]) >= 2)
                     {
                         $this->dispatch(
-                        	new \Solidifier\Defects\EncapsulationViolation($attribute, $attributeNode)
+                            new \Solidifier\Defects\EncapsulationViolation($attribute, $attributeNode)
                         );
                     }
                 }
