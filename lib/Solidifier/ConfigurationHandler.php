@@ -4,6 +4,7 @@ namespace Solidifier;
 
 use Solidifier\Visitors\Property\PublicAttributes;
 use Solidifier\Visitors\GetterSetter\FluidSetters;
+use Solidifier\Visitors\GetterSetter\EncapsulationViolation;
 use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 use Solidifier\Visitors\PreAnalyze\ObjectTypes;
@@ -52,6 +53,10 @@ class ConfigurationHandler
             
             'getterSetter.fluid' => function(array $config) {
                 return new FluidSetters();    
+            },
+            
+            'getterSetter.encapsulationViolation' => function(array $config) {
+                return new EncapsulationViolation();    
             },
             
             'dependency.magical' => function(array $config) {
