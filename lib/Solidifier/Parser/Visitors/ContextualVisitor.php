@@ -14,10 +14,18 @@ use Solidifier\Visitors\ObjectType;
 abstract class ContextualVisitor extends AbstractVisitor
 {
     protected
+        $nodeStack,
         $currentNamespace,
         $currentObjectType,
         $currentMethod;
 
+    public function __construct()
+    {
+        parent::__construct();
+        
+        $this->nodeStack = new \SplStack();
+    }
+    
     final public function beforeTraverse(array $nodes)
     {
         $this->currentNamespace = null;
@@ -51,6 +59,7 @@ abstract class ContextualVisitor extends AbstractVisitor
         }
         
         $this->enter($node);
+        $this->nodeStack->push($node);
     }
     
     final public function leaveNode(Node $node)
@@ -69,6 +78,7 @@ abstract class ContextualVisitor extends AbstractVisitor
         }
         
         $this->leave($node);
+        $this->nodeStack->pop();
     }
     
     final public function afterTraverse(array $nodes)

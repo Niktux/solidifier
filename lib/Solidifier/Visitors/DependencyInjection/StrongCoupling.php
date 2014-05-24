@@ -57,9 +57,9 @@ class StrongCoupling extends ContextualVisitor
         {
             if($this->isAnAllowedObjectType($node->class) === false)
             {
-                $this->dispatch(
-                    new \Solidifier\Defects\StrongCoupling($this->currentObjectType, $node)
-                );
+                $defect = new \Solidifier\Defects\StrongCoupling($this->currentObjectType, $node);
+                $defect->setContext($this->nodeStack->top());
+                $this->dispatch($defect);
             }
         }
     }

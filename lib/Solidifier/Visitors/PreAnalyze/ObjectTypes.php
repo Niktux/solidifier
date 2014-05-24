@@ -17,6 +17,8 @@ class ObjectTypes extends ContextualVisitor
     
     public function __construct()
     {
+        parent::__construct();
+        
         $this->types = array();
     }
     
