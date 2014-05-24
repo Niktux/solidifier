@@ -23,33 +23,43 @@ class EncapsulationViolation extends ContextualVisitor
         } 
         elseif($node instanceof Property)
         {
-            if($node->isPrivate())
-            {
-                foreach($node->props as $property)
-                {
-                    $this->privateAttributes[$property->name] = $node;
-                }
-            }
+            $this->enterProperty($node);
         } 
         elseif($node instanceof ClassMethod)
         {
-            if($node->isPublic())
+            $this->enterClassMethod($node);
+        }
+    }
+    
+    private function enterProperty(Property $node)
+    {
+        if($node->isPrivate())
+        {
+            foreach($node->props as $property)
             {
-                $methodName = $node->name;
+                $this->privateAttributes[$property->name] = $node;
+            }
+        }
+    }
+    
+    private function enterClassMethod(ClassMethod $node)
+    {
+        if($node->isPublic())
+        {
+            $methodName = $node->name;
 
-                if($this->isGetterOrSetter($methodName))
+            if($this->isGetterOrSetter($methodName))
+            {
+                $correspondingAttribute = strtolower(substr($methodName, 3));
+                
+                if(! isset($this->publicMethods[$correspondingAttribute]))
                 {
-                    $correspondingAttribute = strtolower(substr($methodName, 3));
-                    
-                    if(! isset($this->publicMethods[$correspondingAttribute]))
-                    {
-                        $this->publicMethods[$correspondingAttribute] = array();
-                    }
-                    
-                    $this->publicMethods[$correspondingAttribute][] = $methodName;    
+                    $this->publicMethods[$correspondingAttribute] = array();
                 }
-           }
-       }
+                
+                $this->publicMethods[$correspondingAttribute][] = $methodName;    
+            }
+        }
     }
     
     private function isGetterOrSetter($methodName)
