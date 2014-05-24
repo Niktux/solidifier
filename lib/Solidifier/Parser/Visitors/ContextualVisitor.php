@@ -7,7 +7,6 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\Namespace_;
-use Solidifier\Dispatcher;
 use PhpParser\Node\Stmt\ClassMethod;
 use Solidifier\Visitors\ObjectType;
 

@@ -4,9 +4,7 @@ namespace Solidifier\Visitors\PreAnalyze;
 
 use Solidifier\Parser\Visitors\ContextualVisitor;
 use PhpParser\Node;
-use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
-use Solidifier\Visitors\ObjectType;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Trait_;
 

@@ -7,7 +7,6 @@ use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr\New_;
 use Solidifier\Visitors\ObjectType;
-use Solidifier\Dispatcher;
 
 class StrongCoupling extends ContextualVisitor
 {

@@ -4,8 +4,6 @@ namespace Solidifier\EventSubscribers;
 
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Solidifier\Events\TraverseEnd;
 use Solidifier\Events\ChangeFile;
 use Solidifier\Defect;
