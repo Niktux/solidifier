@@ -68,11 +68,21 @@ class Application extends \Pimple
         
         $this['twig.path'] = 'views';
         $this['twig.cache'] = false;
+        $this['twig.debug'] = true;
+        
         $this['twig'] = function($c) {
             $loader = new \Twig_Loader_Filesystem($c['twig.path']);
-            return new \Twig_Environment($loader, array(
+            $twig = new \Twig_Environment($loader, array(
                 'cache' => $c['twig.cache'],
+                'debug' => $c['twig.debug'],
             ));
+            
+            if($c['twig.debug'] === true)
+            {
+                $twig->addExtension(new \Twig_Extension_Debug());
+            }
+            
+            return $twig;
         };
         
         $this['objectTypes.list'] = function($c) {

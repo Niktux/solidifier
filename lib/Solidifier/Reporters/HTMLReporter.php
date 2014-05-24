@@ -24,11 +24,31 @@ class HTMLReporter
            'report.html.twig',
             array(
                 'project' => 'Solidifier',
-                'defects' => $defects,
+                'defects' => $this->sortDefectsByNamespace($defects),
                 'printer' => $prettyPrint,
         ));
         
         return $this;
+    }
+    
+    private function sortDefectsByNamespace(array $defects)
+    {
+        $result = array();
+        ksort($defects);
+        
+        foreach($defects as $file => $fileDefects)
+        {
+            $namespace = implode('/', explode('/', $file, -1));
+            
+            if(! isset($result[$namespace]))
+            {
+                $result[$namespace] = array();
+            }
+            
+            $result[$namespace][$file] = $fileDefects;
+        }
+        
+        return $result;
     }
     
     public function save($reportFilename)

@@ -20,11 +20,48 @@
     <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/tomorrow-night-bright.min.css">
     
     <style>
-    body {
-        padding-top: 50px;
-    }
+	    body {
+	        padding-top: 50px;
+	    }
+	    
+	    /* Hide for mobile, show later */
+		.sidebar {
+		  display: none;
+		}
+		
+		@media (min-width: 768px) {
+		  .sidebar {
+		    position: fixed;
+		    top: 51px;
+		    bottom: 0;
+		    left: 0;
+		    z-index: 1000;
+		    display: block;
+		    padding: 20px;
+		    overflow-x: hidden;
+		    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+		    background-color: #f5f5f5;
+		    border-right: 1px solid #eee;
+		  }
+		}
+	
+		.main {
+		  padding: 20px;
+		}
+		@media (min-width: 768px) {
+		  .main {
+		    padding-right: 40px;
+		    padding-left: 40px;
+		  }
+		}
+		.main .page-header {
+		  margin-top: 0;
+		}
+		
+        #leftMenu .accordion-group {
+            font-size: 12px;
+        }    
     </style>
-    
   </head>
   <body>
 
@@ -42,22 +79,56 @@
       </div>
     </div>
 
-    <div class="container">
     
-    {% for file, fileDefects in defects %}
-    <h3>{{ file }}</h3>
-    <table class="table table-bordered">
-        {% for defect in fileDefects %}
-        <tr>
-            <td>L{{ defect.line }}</td>
-            <td>
-                {{ defect.formattedMessage|raw }}
-                <br>
-                <pre><code>{{ printer.prettyPrint([defect.context]) }}</code></pre>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="accordion" id="leftMenu">
+            {% for namespace, files in defects %}
+                {% set namespaceId = namespace|replace({'/': '-'}) %}
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#ns-{{ namespaceId }}">
+                                <i class="icon-th"></i> {{ namespace }}
+                            </a>
+                        </div>
+                        <div id="ns-{{ namespaceId }}" class="accordion-body collapse" style="height: 0px; ">
+                            <div class="accordion-inner">
+                                <ul>
+                                    {% for file, fileDefects in files %}
+                                        <li><a href="#{{ file }}">{{ file|split('/')|last }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+          {% endfor %}
+            </div>
+        </div>
+         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    
+    {% for namespace, files in defects %}
+	    {% for file, fileDefects in files %}
+		    <a name="{{ file }}"></a>
+	        <div class="panel panel-info panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">{{ file }}</h3>
+			  </div>
+			</div>
+	    
+		    <table class="table table-bordered">
+		        {% for defect in fileDefects %}
+		        <tr>
+		            <td>L{{ defect.line }}</td>
+		            <td>
+		                {{ defect.formattedMessage|raw }}
+		                <br>
+		                <pre><code>{{ printer.prettyPrint([defect.context]) }}</code></pre>
+		            </td>
+		        </tr>
+		        {% endfor %}
+		    </table>
+	    {% endfor %}
     {% endfor %}
 
     </div><!-- /.container -->
