@@ -73,7 +73,7 @@ class PublicClass extends ContextualVisitor
         return $name !== '__construct' && $name !== '__destruct' && $name !== strtolower($this->currentObjectType->name);
     }
 
-    protected function leave($node)
+    protected function leave(Node $node)
     {
         if($node instanceof Class_)
         {
