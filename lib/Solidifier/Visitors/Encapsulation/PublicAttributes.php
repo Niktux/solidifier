@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidifier\Visitors\Property;
+namespace Solidifier\Visitors\Encapsulation;
 
 use Solidifier\Parser\Visitors\ContextualVisitor;
 use PhpParser\Node;

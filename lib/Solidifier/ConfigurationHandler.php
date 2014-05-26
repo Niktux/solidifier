@@ -2,9 +2,9 @@
 
 namespace Solidifier;
 
-use Solidifier\Visitors\Property\PublicAttributes;
+use Solidifier\Visitors\Encapsulation\PublicAttributes;
 use Solidifier\Visitors\GetterSetter\FluidSetters;
-use Solidifier\Visitors\GetterSetter\EncapsulationViolation;
+use Solidifier\Visitors\Encapsulation\EncapsulationViolation;
 use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 use Solidifier\Visitors\PreAnalyze\ObjectTypes;

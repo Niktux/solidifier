@@ -3,7 +3,7 @@
 namespace Solidifier\Analyzers;
 
 use Solidifier\AnalyzeTestCase;
-use Solidifier\Visitors\Property\PublicAttributes;
+use Solidifier\Visitors\Encapsulation\PublicAttributes;
 
 class AnalyzerTest extends AnalyzeTestCase
 {

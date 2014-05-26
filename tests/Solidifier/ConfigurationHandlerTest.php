@@ -45,7 +45,7 @@ class ConfigurationHandlerTest extends \PHPUnit_Framework_TestCase
         $handler = new ConfigurationHandler(array(), new ObjectTypes());
         $handler->configure($this->analyzer);
         
-        $this->assertHasVisitor('Solidifier\Visitors\Property\PublicAttributes');
+        $this->assertHasVisitor('Solidifier\Visitors\Encapsulation\PublicAttributes');
     }
     
     public function testEnable()
@@ -58,7 +58,7 @@ class ConfigurationHandlerTest extends \PHPUnit_Framework_TestCase
         $handler = new ConfigurationHandler($values, new ObjectTypes());
         $handler->configure($this->analyzer);     
 
-        $this->assertNotHasVisitor('Solidifier\Visitors\Property\PublicAttributes');
+        $this->assertNotHasVisitor('Solidifier\Visitors\Encapsulation\PublicAttributes');
         $this->assertHasVisitor('Solidifier\Visitors\DependencyInjection\StrongCoupling');
     }
 }
