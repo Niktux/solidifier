@@ -9,6 +9,7 @@ use Solidifier\Visitors\DependencyInjection\MagicalInstantiation;
 use Solidifier\Visitors\DependencyInjection\StrongCoupling;
 use Solidifier\Visitors\PreAnalyze\ObjectTypes;
 use Solidifier\Visitors\DependencyInjection\InterfaceSegregation;
+use Solidifier\Visitors\Encapsulation\PublicClass;
 
 class ConfigurationHandler
 {
@@ -49,6 +50,22 @@ class ConfigurationHandler
                         
             'property.public' => function(array $config) {
                 return new PublicAttributes();    
+            },
+            
+            'class.public' => function(array $config) {
+                $visitor = new PublicClass();
+
+                if(isset($config['threshold']) && is_numeric($config['threshold']))
+                {
+                    $visitor->setThreshold($config['threshold']);
+                }
+
+                if(isset($config['minMethodCount']) && is_numeric($config['minMethodCount']))
+                {
+                    $visitor->setMinMethodCount($config['minMethodCount']);
+                }
+                
+                return $visitor;
             },
             
             'getterSetter.fluid' => function(array $config) {
