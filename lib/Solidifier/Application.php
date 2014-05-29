@@ -103,5 +103,13 @@ class Application extends \Pimple
         $this['subscriber.html'] = function($c) {
             return new EventSubscribers\HTML($c['reporter.html']);
         };
+        
+        $this['reporter.xml'] = function($c) {
+            return new Reporters\XMLReporter();
+        };
+        
+        $this['subscriber.xml'] = function($c) {
+            return new EventSubscribers\XML($c['reporter.xml']);
+        };
     }
 }

@@ -27,7 +27,8 @@ class Run extends Command
         $this->setName('run')
             ->setDescription('Check rules')
             ->addArgument('src', InputArgument::REQUIRED, 'sources to parse')
-            ->addOption('htmlReport', null, InputOption::VALUE_REQUIRED, 'HTML report filename');
+            ->addOption('htmlReport', null, InputOption::VALUE_REQUIRED, 'HTML report filename')
+            ->addOption('xmlReport', null, InputOption::VALUE_REQUIRED, 'XML report filename');
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -46,6 +47,7 @@ class Run extends Command
 
         $this->enableConsoleOutput($dispatcher, $output);
         $this->enableHtmlReport($dispatcher, $input->getOption('htmlReport'));
+        $this->enableXmlReport($dispatcher, $input->getOption('xmlReport'));
     }
     
     private function enableConsoleOutput(EventDispatcherInterface $dispatcher, OutputInterface $output)
@@ -63,6 +65,17 @@ class Run extends Command
             $html->setReportFilename($htmlReportFilename);
             
             $dispatcher->addSubscriber($html);
+        }
+    }
+    
+    private function enableXmlReport(EventDispatcherInterface $dispatcher, $xmlReportFilename)
+    {
+        if($xmlReportFilename !== null)
+        {
+            $xml = $this->container['subscriber.xml'];
+            $xml->setReportFilename($xmlReportFilename);
+            
+            $dispatcher->addSubscriber($xml);
         }
     }
 }

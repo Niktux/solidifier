@@ -2,16 +2,17 @@
 
 namespace Solidifier\EventSubscribers;
 
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Solidifier\Events\TraverseEnd;
 use Solidifier\Events\ChangeFile;
 use Solidifier\Defect;
 use Solidifier\Reporter;
 
-class HTML implements EventSubscriberInterface
+class XML implements EventSubscriberInterface
 {
     const
-        DEFAULT_REPORT_FILENAME = 'report.html';
+        DEFAULT_REPORT_FILENAME = 'report.xml';
     
     private
         $defects,
@@ -57,17 +58,7 @@ class HTML implements EventSubscriberInterface
             $this->defects[$this->currentFile] = array();
         }
         
-        $event->formattedMessage = $this->formatMessage($event->getMessage());
         $this->defects[$this->currentFile][] = $event;
-    }
-    
-    private function formatMessage($message)
-    {
-        return strtr($message, array(
-            'id>' => 'strong>',
-            'type>' => 'strong>',
-            'method>' => 'strong>',
-        ));
     }
     
     public function postMortemReport(TraverseEnd $event)

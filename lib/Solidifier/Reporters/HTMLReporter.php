@@ -3,8 +3,9 @@
 namespace Solidifier\Reporters;
 
 use PhpParser\PrettyPrinter\Standard;
+use Solidifier\Reporter;
 
-class HTMLReporter
+class HTMLReporter implements Reporter
 {
     private
         $content,
