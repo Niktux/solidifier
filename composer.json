@@ -16,9 +16,7 @@
 		"ci"
 	],
 	"homepage" : "https://github.com/Niktux/solidifier",
-	"license" : [
-		"MIT"
-	],
+	"license" : "MIT",
 	"require" : {
 		"symfony/console" : "2.4.2",
 		"pimple/pimple" : "2.0.0",
@@ -37,5 +35,8 @@
 		"psr-0" : {
 			"Solidifier\\" : "lib"
 		}
-	}
+	},
+	"bin" : [
+		"solidifier"
+	]
 }
