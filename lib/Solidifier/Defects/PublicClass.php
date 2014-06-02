@@ -3,9 +3,6 @@
 namespace Solidifier\Defects;
 
 use Solidifier\Defect;
-use Solidifier\Visitors\ObjectType;
-use PhpParser\Node\Stmt\Property;
-use PhpParser\Node\Stmt\Class_;
 
 class PublicClass extends Defect
 {

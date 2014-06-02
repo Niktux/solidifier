@@ -3,7 +3,6 @@
 namespace Solidifier\Defects;
 
 use Solidifier\Defect;
-use PhpParser\PrettyPrinter\Standard;
 use PhpParser\Node\Stmt\Property;
 
 class EncapsulationViolation extends Defect
