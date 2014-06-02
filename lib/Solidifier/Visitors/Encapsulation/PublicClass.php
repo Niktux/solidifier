@@ -4,7 +4,6 @@ namespace Solidifier\Visitors\Encapsulation;
 
 use Solidifier\Parser\Visitors\ContextualVisitor;
 use PhpParser\Node;
-use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Class_;
 
